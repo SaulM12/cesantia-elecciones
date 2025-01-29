@@ -1,0 +1,121 @@
+<div class="flex flex-col">
+  <p-menubar [model]="items">
+    <ng-template #start>
+      <img src="/img/logo.png" alt="Logo" class="w-14 h-auto mb-2 float-left" />
+    </ng-template>
+    <ng-template #end>
+      <div class="flex items-center gap-2">
+        <H2>SCANNER</H2>
+      </div>
+    </ng-template>
+  </p-menubar>
+  <div class="custom-p flex flex-col gap-2">
+    <h2>Buscar de forma manual</h2>
+    <input type="text" pInputText [(ngModel)]="ci" name="ci" />
+    <p-button
+      (onClick)="searchInvitation(ci)"
+      label="Buscar invitación por CI"
+      severity="secondary"
+    />
+    <h2>Escanear la invitación</h2>
+    @if (!invitation) {
+    <zxing-scanner (scanSuccess)="searchInvitation($event)"></zxing-scanner>
+    }@else {
+    <p-button
+      (onClick)="resetScanner()"
+      label="Volver a escanear"
+      severity="secondary"
+    />
+    }
+  </div>
+</div>
+<p-dialog
+  header="Confirmar asistencia"
+  [(visible)]="showInvitation"
+  [modal]="true"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  @if (invitation) {
+  <div class="bg-white rounded-lg p-6 w-full flex flex-col gap-2">
+    <img
+      src="/img/logo-letras.png"
+      alt="Logo"
+      class="w-60 h-auto mb-2 float-left"
+    />
+
+    <div class="mb-4">
+      <label for="id" class="block text-gray-700 font-semibold">Grado</label>
+      <div
+        id="id"
+        class="w-full p-2 border border-gray-300 rounded bg-gray-100"
+      >
+        {{ invitation.delegate?.grade?.description }}
+      </div>
+    </div>
+    <div class="mb-4">
+      <label for="delegate" class="block text-gray-700 font-semibold"
+        >Cédula</label
+      >
+      <div
+        id="delegate"
+        class="w-full p-2 border border-gray-300 rounded bg-gray-100"
+      >
+        {{ invitation.delegate?.ci }}
+      </div>
+    </div>
+    <div class="mb-4">
+      <label for="delegate" class="block text-gray-700 font-semibold"
+        >Delegado</label
+      >
+      <div
+        id="delegate"
+        class="w-full p-2 border border-gray-300 rounded bg-gray-100"
+      >
+        {{ invitation.delegate?.names }} {{ invitation.delegate?.lastName }}
+        {{ invitation.delegate?.secondLastName }}
+      </div>
+    </div>
+    <div class="mb-4">
+      <label for="id" class="block text-gray-700 font-semibold"
+        >Cuadrante</label
+      >
+      <div
+        id="id"
+        class="w-full p-2 border border-gray-300 rounded bg-gray-100"
+      >
+        {{ invitation.tableEntity.quadrant.acronym }}
+      </div>
+    </div>
+    <div class="mb-4">
+      <label for="tableEntity" class="block text-gray-700 font-semibold"
+        >Mesa</label
+      >
+      <div
+        id="tableEntity"
+        class="w-full p-2 border border-gray-300 rounded bg-gray-100"
+      >
+        {{ invitation.tableEntity.tableNumber }}
+      </div>
+    </div>
+    <div class="mb-4">
+      <label for="chairNumber" class="block text-gray-700 font-semibold"
+        >Número de Silla</label
+      >
+      <div
+        id="chairNumber"
+        class="w-full p-2 border border-gray-300 rounded bg-gray-100"
+      >
+        {{ invitation.chairNumber }}
+      </div>
+    </div>
+    <p-button
+      (onClick)="confirmAttendance(invitation.id)"
+      label="Confirmar"
+      class="w-full"
+    ></p-button>
+  </div>
+  }
+</p-dialog>

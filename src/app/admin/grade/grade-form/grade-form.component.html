@@ -1,0 +1,57 @@
+<form (ngSubmit)="save()" #form="ngForm">
+  <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-1">
+      <label for="description" class="font-semibold">Activo</label>
+
+      <p-toggleswitch name="active" [(ngModel)]="grade.active" />
+    </div>
+    <div class="flex flex-col gap-1">
+      <label for="description" class="font-semibold">Descripción</label>
+      <input
+        id="description"
+        type="text"
+        pInputText
+        [(ngModel)]="grade.description"
+        name="description"
+        required
+        [ngClass]="descriptionInput.errors?.['required'] && (descriptionInput.dirty || descriptionInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #descriptionInput="ngModel"
+      />
+    </div>
+    <div class="flex flex-col gap-1">
+      <label for="name" class="font-semibold">Abreviatura</label>
+      <input
+        id="name"
+        type="text"
+        pInputText
+        [(ngModel)]="grade.abbreviation"
+        name="name"
+        required
+        [ngClass]="nameInput.errors?.['required'] && (nameInput.dirty || nameInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #nameInput="ngModel"
+      />
+    </div>
+    <div class="flex flex-col gap-1">
+      <label for="name" class="font-semibold">Cuadrante designado</label>
+      <p-select
+        [options]="quadrants"
+        [(ngModel)]="grade.quadrant"
+        [style]="{ width: '100%' }"
+        optionLabel="description"
+        placeholder="Seleccione un cuadrante"
+        appendTo="body"
+        name="quadrant"
+        required
+        [ngClass]="quadrantInput.errors?.['required'] && (quadrantInput.dirty || quadrantInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #quadrantInput="ngModel"
+      ></p-select>
+    </div>
+    <div>
+      <p-button
+        [loading]="saveInProgress"
+        type="submit"
+        label="Guardar"
+      ></p-button>
+    </div>
+  </div>
+</form>

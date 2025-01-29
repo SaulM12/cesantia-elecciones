@@ -1,0 +1,180 @@
+<form (ngSubmit)="edit?update():save()" #form="ngForm">
+  <div class="flex flex-col gap-4">
+    <!-- Campo Activo -->
+    <div class="flex flex-col gap-1">
+      <label for="active" class="font-semibold">Activo</label>
+      <p-toggleswitch name="active" [(ngModel)]="delegate.active" />
+    </div>
+
+    <!-- Campo CI -->
+    <div class="flex flex-col gap-1">
+      <label for="ci" class="font-semibold">CI</label>
+      <input
+        id="ci"
+        type="text"
+        pInputText
+        [(ngModel)]="delegate.ci"
+        name="ci"
+        required
+        [ngClass]="ciInput.errors?.['required'] && (ciInput.dirty || ciInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #ciInput="ngModel"
+      />
+    </div>
+
+    <!-- Campo Email -->
+    <div class="flex flex-col gap-1">
+      <label for="email" class="font-semibold">Email</label>
+      <input
+        id="email"
+        type="email"
+        pInputText
+        [(ngModel)]="delegate.email"
+        name="email"
+        required
+        [ngClass]="emailInput.errors?.['required'] && (emailInput.dirty || emailInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #emailInput="ngModel"
+      />
+    </div>
+
+    <!-- Campo Nombres -->
+    <div class="flex flex-col gap-1">
+      <label for="names" class="font-semibold">Nombres</label>
+      <input
+        id="names"
+        type="text"
+        pInputText
+        [(ngModel)]="delegate.names"
+        name="names"
+        required
+        [ngClass]="namesInput.errors?.['required'] && (namesInput.dirty || namesInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #namesInput="ngModel"
+      />
+    </div>
+
+    <!-- Campo Apellidos -->
+    <div class="flex flex-col gap-1">
+      <label for="lastName" class="font-semibold">Apellido Paterno</label>
+      <input
+        id="lastName"
+        type="text"
+        pInputText
+        [(ngModel)]="delegate.lastName"
+        name="lastName"
+        required
+        [ngClass]="lastNameInput.errors?.['required'] && (lastNameInput.dirty || lastNameInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #lastNameInput="ngModel"
+      />
+    </div>
+    <div class="flex flex-col gap-1">
+      <label for="secondLastName" class="font-semibold">Apellido Materno</label>
+      <input
+        id="secondLastName"
+        type="text"
+        pInputText
+        [(ngModel)]="delegate.secondLastName"
+        name="secondLastName"
+        required
+        [ngClass]="secondLastNameInput.errors?.['required'] && (secondLastNameInput.dirty || secondLastNameInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #secondLastNameInput="ngModel"
+      />
+    </div>
+
+    <!-- Campo Teléfono -->
+    <div class="flex flex-col gap-1">
+      <label for="phone" class="font-semibold">Teléfono</label>
+      <input
+        id="phone"
+        type="text"
+        pInputText
+        [(ngModel)]="delegate.phone"
+        name="phone"
+        required
+        [ngClass]="phoneInput.errors?.['required'] && (phoneInput.dirty || phoneInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #phoneInput="ngModel"
+      />
+    </div>
+
+    <!-- Campo Cuadrante -->
+    <div class="flex flex-col gap-1">
+      <label for="grade" class="font-semibold">Nivel</label>
+      <p-select
+        [options]="quadrants"
+        [(ngModel)]="selectedQuadrant"
+        (onChange)="getGrades($event.value)"
+        [style]="{ width: '100%' }"
+        optionLabel="description"
+        placeholder="Seleccione un cuadrante"
+        appendTo="body"
+        name="selectedQuadrant"
+        required
+        [ngClass]="selectedQuadrantInput.errors?.['required'] && (selectedQuadrantInput.dirty || selectedQuadrantInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #selectedQuadrantInput="ngModel"
+      ></p-select>
+    </div>
+
+    <!-- Campo Grado -->
+    <div class="flex flex-col gap-1">
+      <label for="grade" class="font-semibold">
+        Grado @if (loadingGrades) {
+        <i class="pi pi-spin pi-spinner"></i>
+        }
+      </label>
+      <p-select
+        [options]="grades"
+        [disabled]="loadingGrades || !grades.length"
+        [(ngModel)]="delegate.grade"
+        [style]="{ width: '100%' }"
+        optionLabel="description"
+        placeholder="Seleccione un grado"
+        appendTo="body"
+        name="grade"
+        required
+        [ngClass]="gradeInput.errors?.['required'] && (gradeInput.dirty || gradeInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #gradeInput="ngModel"
+      ></p-select>
+    </div>
+
+    <!-- Campo Unidad -->
+    <div class="flex flex-col gap-1">
+      <label for="unit" class="font-semibold">Unidad</label>
+      <p-select
+        [options]="units"
+        [(ngModel)]="delegate.unit"
+        [style]="{ width: '100%' }"
+        optionLabel="description"
+        placeholder="Seleccione la unidad"
+        appendTo="body"
+        name="unit"
+        required
+        [ngClass]="unit.errors?.['required'] && (unit.dirty || unit.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #unit="ngModel"
+      ></p-select>
+    </div>
+
+    <!-- Campo Tipo de Delegado -->
+    <div class="flex flex-col gap-1">
+      <label for="delegateType" class="font-semibold">Tipo de Delegado</label>
+      <p-select
+        [options]="delegateTypes"
+        [(ngModel)]="delegate.delegateType"
+        [style]="{ width: '100%' }"
+        optionLabel="description"
+        placeholder="Seleccione un tipo de delegado"
+        appendTo="body"
+        name="delegateType"
+        required
+        [ngClass]="delegateTypeInput.errors?.['required'] && (delegateTypeInput.dirty || delegateTypeInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #delegateTypeInput="ngModel"
+      ></p-select>
+    </div>
+
+    <!-- Botón Guardar -->
+    <div>
+      <p-button
+        [loading]="saveInProgress"
+        type="submit"
+        label="Guardar"
+      ></p-button>
+    </div>
+  </div>
+</form>

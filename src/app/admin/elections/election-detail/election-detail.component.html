@@ -1,0 +1,40 @@
+<div class="custom-p flex flex-col gap-3">
+  @if (selectedQuadrant) {
+  <h1>RESULTADOS DEL CUADRANTE: {{ selectedQuadrant.description }}</h1>
+  <p-button
+    severity="secondary"
+    label="Actualizar resultados"
+    icon="pi pi-refresh"
+    [loading]="loading"
+    (onClick)="getDelegateVoteCounts()"
+  />
+  <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+    @for (delegateVote of delegateVoteCounts; track $index) {
+    <p-card [style]="{ width: '100%', overflow: 'hidden' }">
+      <ng-template #title>{{ delegateVote.candidateName }}</ng-template>
+      <div class="flex justify-center">
+        @if (delegateVote.image) {
+        <img
+          class="w-36 h-36 object-cover"
+          [src]="decodeImage(delegateVote.image)"
+          alt="candidato"
+        />
+        }@else { No registra imagen }
+      </div>
+
+      <ng-template #footer>
+        <p>Votos totales: {{ delegateVote.voteCount }}</p>
+      </ng-template>
+    </p-card>
+    }@empty {
+    <p>No hay candidatos registrados para este cuadrante</p>
+    }
+  </div>
+  <p-chart
+    type="pie"
+    [data]="data"
+    [options]="options"
+    class="w-full md:w-[30rem]"
+  />
+  }
+</div>

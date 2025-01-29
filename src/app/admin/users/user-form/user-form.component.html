@@ -1,0 +1,41 @@
+<form (ngSubmit)="save()" #form="ngForm">
+  <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-1">
+      <label for="ci" class="font-semibold">CI</label>
+      <input
+        id="ci"
+        type="text"
+        pInputText
+        [(ngModel)]="user.ci"
+        name="ci"
+        required
+        [ngClass]="ciInput.errors?.['required'] && (ciInput.dirty || ciInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #ciInput="ngModel"
+      />
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label for="role" class="font-semibold">Role</label>
+      <p-select
+        [options]="roleOptions"
+        [(ngModel)]="user.role"
+        optionLabel="label"
+        placeholder="Seleccione"
+        optionValue="role"
+        name="role"
+        appendTo="body"
+        required
+        [ngClass]="roleInput.errors?.['required'] && (roleInput.dirty || roleInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #roleInput="ngModel"
+      />
+    </div>
+
+    <div>
+      <p-button
+        [loading]="saveInProgress"
+        type="submit"
+        label="Guardar"
+      ></p-button>
+    </div>
+  </div>
+</form>

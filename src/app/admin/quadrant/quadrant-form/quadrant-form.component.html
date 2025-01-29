@@ -1,0 +1,49 @@
+<form (ngSubmit)="save()" #form="ngForm">
+  <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-1">
+      <label for="name" class="font-semibold">Acrónimo</label>
+      <input
+        id="name"
+        type="text"
+        pInputText
+        [(ngModel)]="quadrant.acronym"
+        name="name"
+        required
+        [ngClass]="nameInput.errors?.['required'] && (nameInput.dirty || nameInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #nameInput="ngModel"
+      />
+      
+    </div>
+
+    <div class="flex flex-col gap-1">
+      <label for="description" class="font-semibold">Descripción</label>
+      <input
+        id="description"
+        type="text"
+        pInputText
+        [(ngModel)]="quadrant.description"
+        name="description"
+        required
+        [ngClass]="descriptionInput.errors?.['required'] && (descriptionInput.dirty || descriptionInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #descriptionInput="ngModel"
+      />
+      
+    </div>
+    <div class="flex flex-col gap-1">
+      <label for="quadrantOrder" class="font-semibold">Número mesa</label>
+
+      <p-inputnumber
+        inputId="integeronly"
+        [(ngModel)]="quadrant.quadrantOrder"
+        name="quadrantOrder"
+        required
+        [ngClass]="quadrantOrderInput.errors?.['required'] && (quadrantOrderInput.dirty || quadrantOrderInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #quadrantOrderInput="ngModel"
+      />
+    </div>
+
+    <div>
+        <p-button [loading]="saveInProgress" type="submit" label="Guardar"></p-button>
+    </div>
+  </div>
+</form>

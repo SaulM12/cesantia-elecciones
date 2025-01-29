@@ -1,0 +1,49 @@
+<div class="flex flex-col items-center justify-center h-screen w-screen">
+  <div
+    class="w-full md:3/4 lg:w-2/5 xl:1/4 bg-white rounded-lg shadow-xl custom-p flex flex-col"
+  >
+    <div class="flex justify-center align-middle">
+      <img
+        src="/img/logo-letras.png"
+        alt="Logo"
+        class="w-72 h-auto mb-2 float-left"
+      />
+    </div>
+    <form
+      #loginForm="ngForm"
+      class="mt-6 flex flex-col gap-4"
+      (submit)="login()"
+    >
+      <div>
+        <label for="userName" class="block font-semibold text-gray-600"
+          >Cédula de identidad</label
+        >
+        <input
+          pInputText
+          type="text"
+          name="userName"
+          id="userName"
+          placeholder=""
+          [(ngModel)]="userName"
+          class="w-full"
+          required
+        />
+      </div>
+      <div>
+        <label for="password" class="block font-semibold text-gray-600"
+          >Contraseña</label
+        >
+        <p-password
+          [(ngModel)]="password"
+          [feedback]="false"
+          [toggleMask]="true"
+          name="password"
+          id="password"
+          styleClass="w-full"
+          inputStyleClass="w-full"
+        />
+      </div>
+      <p-button label="Iniciar Sesión" type="submit" [loading]="isLoading" />
+    </form>
+  </div>
+</div>

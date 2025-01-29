@@ -1,0 +1,88 @@
+<div class="custom-p flex flex-col gap-4">
+  <h1 class="text-xl font-semibold">Gestión de asistencia y cuadrantes</h1>
+  <p-button
+  severity="secondary"
+  label="Actualizar resultados"
+  icon="pi pi-refresh"
+  [loading]="isLoading"
+  (onClick)="initApp()"
+/>
+  <div class="legend-container flex gap-4 mb-4 flex-wrap">
+    <div class="legend-item flex items-center gap-2">
+      <span
+        class="legend-color bg-green-700 w-4 h-4 inline-block rounded"
+      ></span>
+      <span>Disponible</span>
+    </div>
+    <div class="legend-item flex items-center gap-2">
+      <span class="legend-color bg-red-700 w-4 h-4 inline-block rounded"></span>
+      <span>Asignado</span>
+    </div>
+    <div class="legend-item flex items-center gap-2">
+      <span
+        class="legend-color bg-blue-700 w-4 h-4 inline-block rounded"
+      ></span>
+      <span>Asistencia confirmada</span>
+    </div>
+  </div>
+  <p>
+    Invitados: {{ invitationsCount }}
+  </p>
+  <p>
+    Asistentes: {{ invitationsScannedCount }}
+  </p>
+  <p>
+    Porcentaje de asistentes 
+  {{ (invitationsScannedCount / invitationsCount) * 100 }}%
+  </p>
+  <div
+    class="min-h-screen grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 xl:grid-cols-5 gap-6"
+  >
+    @if (isLoading) {
+    <p-progress-spinner ariaLabel="loading" />
+    } @for (quadrant of quadrants; track $index) {
+    <div class="flex flex-col gap-2 border border-gray-300 p-4 rounded-lg">
+      <h3 class="text-xl font-bold mb-4">{{ quadrant.description }}</h3>
+      <div class="flex">
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-6"
+        >
+          @for (table of quadrant.tables; track $index) {
+          <div class="table-container relative">
+            <!-- Mesa -->
+            <div class="table">{{ table.tableNumber }}</div>
+            <!-- Sillas -->
+            @for (invitation of table.invitations; track $index; let index =
+            $index) {
+            <button
+              (click)="openModal(invitation, table, quadrant)"
+              [ngClass]="getChairClass(index, invitation)"
+              class="chair"
+            ></button>
+            }
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+  <p-dialog
+    header="Invitación"
+    [(visible)]="showFormDialog"
+    [modal]="true"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+    [style]="{ width: '50vw' }"
+    [draggable]="false"
+    [resizable]="false"
+  >
+    @if (showFormDialog) {
+    <invitations-form
+      [invitation]="selectedInvitation"
+      [delegates]="delegates"
+      (onSave)="getQuadrants()"
+    ></invitations-form>
+
+    }
+  </p-dialog>
+</div>

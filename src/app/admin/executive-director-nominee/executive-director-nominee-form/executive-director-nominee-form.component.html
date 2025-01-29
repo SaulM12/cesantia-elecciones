@@ -1,0 +1,106 @@
+<form (ngSubmit)="edit ? update() : save()" #form="ngForm">
+  <div class="flex flex-col gap-4">
+    <!-- Campo CI -->
+    <div class="flex flex-col gap-1">
+      <label for="ci" class="font-semibold">CI</label>
+      <input
+        id="ci"
+        type="text"
+        pInputText
+        [(ngModel)]="nominee.ci"
+        name="ci"
+        required
+        [ngClass]="ciInput.errors?.['required'] && (ciInput.dirty || ciInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #ciInput="ngModel"
+      />
+    </div>
+
+    <!-- Campo Nombres -->
+    <div class="flex flex-col gap-1">
+      <label for="names" class="font-semibold">Nombres</label>
+      <input
+        id="names"
+        type="text"
+        pInputText
+        [(ngModel)]="nominee.names"
+        name="names"
+        required
+        [ngClass]="namesInput.errors?.['required'] && (namesInput.dirty || namesInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #namesInput="ngModel"
+      />
+    </div>
+
+    <!-- Campo Apellido Paterno -->
+    <div class="flex flex-col gap-1">
+      <label for="lastName" class="font-semibold">Apellido Paterno</label>
+      <input
+        id="lastName"
+        type="text"
+        pInputText
+        [(ngModel)]="nominee.lastName"
+        name="lastName"
+        required
+        [ngClass]="lastNameInput.errors?.['required'] && (lastNameInput.dirty || lastNameInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #lastNameInput="ngModel"
+      />
+    </div>
+
+    <!-- Campo Apellido Materno -->
+    <div class="flex flex-col gap-1">
+      <label for="secondLastName" class="font-semibold">Apellido Materno</label>
+      <input
+        id="secondLastName"
+        type="text"
+        pInputText
+        [(ngModel)]="nominee.secondLastName"
+        name="secondLastName"
+        required
+        [ngClass]="secondLastNameInput.errors?.['required'] && (secondLastNameInput.dirty || secondLastNameInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #secondLastNameInput="ngModel"
+      />
+    </div>
+
+    <!-- Campo Nombre de la Elección -->
+    <div class="flex flex-col gap-1">
+      <label for="electionName" class="font-semibold"
+        >Nombre de la Elección</label
+      >
+      <input
+        id="electionName"
+        type="text"
+        pInputText
+        [(ngModel)]="nominee.electionName"
+        name="electionName"
+        required
+        [ngClass]="electionNameInput.errors?.['required'] && (electionNameInput.dirty || electionNameInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #electionNameInput="ngModel"
+      />
+    </div>
+
+    <!-- Campo Periodo -->
+    <div class="flex flex-col gap-1">
+      <label for="period" class="font-semibold">Periodo</label>
+      <p-select
+        [options]="periods"
+        [(ngModel)]="nominee.period"
+        [style]="{ width: '100%' }"
+        optionLabel="description"
+        placeholder="Seleccione un periodo"
+        appendTo="body"
+        name="period"
+        required
+        [ngClass]="periodInput.errors?.['required'] && (periodInput.dirty || periodInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #periodInput="ngModel"
+      ></p-select>
+    </div>
+
+    <!-- Botón Guardar -->
+    <div>
+      <p-button
+        [loading]="saveInProgress"
+        type="submit"
+        label="Guardar"
+      ></p-button>
+    </div>
+  </div>
+</form>

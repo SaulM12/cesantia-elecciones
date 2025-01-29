@@ -1,0 +1,38 @@
+<form (ngSubmit)="save()" #form="ngForm">
+    <div class="flex flex-col gap-4">
+  
+      <div class="flex flex-col gap-1">
+        <label for="description" class="font-semibold">Descripción</label>
+        <input
+          id="description"
+          type="text"
+          pInputText
+          [(ngModel)]="unit.description"
+          name="description"
+          required
+          [ngClass]="descriptionInput.errors?.['required'] && (descriptionInput.dirty || descriptionInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+          #descriptionInput="ngModel"
+        />
+        
+      </div>
+      <div class="flex flex-col gap-1">
+        <label for="abbreviation" class="font-semibold">Abreviatura</label>
+        <input
+          id="abbreviation"
+          type="text"
+          pInputText
+          [(ngModel)]="unit.abbreviation"
+          name="abbreviation"
+          required
+          [ngClass]="abbreviationInput.errors?.['required'] && (abbreviationInput.dirty || abbreviationInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+          #abbreviationInput="ngModel"
+        />
+        
+      </div>
+  
+      <div>
+          <p-button [loading]="saveInProgress" type="submit" label="Guardar"></p-button>
+      </div>
+    </div>
+  </form>
+  

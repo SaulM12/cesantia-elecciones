@@ -1,0 +1,125 @@
+<form (ngSubmit)="saveInvitation()" #form="ngForm">
+  <div class="flex flex-col gap-4">
+    @if (invitation.delegate?.candidate) {
+      <p-message severity="info" class="mt-2">ASIGNADO COMO CANDIDATO</p-message>
+    }
+    <!-- Campo Número de Silla (Informativo) -->
+    <div class="flex flex-col gap-1">
+      <label class="font-semibold">Número de Silla</label>
+      <input
+        type="text"
+        pInputText
+        [value]="invitation.chairNumber"
+        disabled
+        class="bg-gray-100"
+      />
+    </div>
+
+    <!-- Campo Mesa (Informativo) -->
+    <div class="flex flex-col gap-1">
+      <label class="font-semibold">Mesa</label>
+      <input
+        type="text"
+        pInputText
+        [value]="invitation.tableEntity.tableNumber"
+        disabled
+        class="bg-gray-100"
+      />
+    </div>
+
+    <!-- Campo Estado (Informativo) -->
+    <div class="flex flex-col gap-1">
+      <label class="font-semibold">Estado</label>
+      <input
+        type="text"
+        pInputText
+        [value]="invitation.status"
+        disabled
+        class="bg-gray-100"
+      />
+    </div>
+
+    <!-- Campo Escaneado (Informativo) -->
+    <div class="flex flex-col gap-1">
+      <label class="font-semibold">Escaneado</label>
+      <span>{{ invitation.scanned ? "SI" : "NO" }}</span>
+    </div>
+
+    <!-- Campo Delegado (Editable) -->
+    <div class="flex flex-col gap-1">
+      <label for="delegate" class="font-semibold">Delegado</label>
+      @if (invitation.delegate) {
+      <input
+        type="text"
+        pInputText
+        [value]="
+          invitation.delegate.ci +
+          ' ' +
+          invitation.delegate.grade.abbreviation +
+          ' ' +
+          invitation.delegate.names +
+          ' ' +
+          invitation.delegate.lastName
+        "
+        disabled
+        class="bg-gray-100"
+      />
+
+      }@else {
+      <p-select
+        [options]="delegates"
+        [(ngModel)]="invitationToForm.delegate"
+        [style]="{ width: '100%' }"
+        optionLabel="names"
+        placeholder="Seleccione un delegado"
+        appendTo="body"
+        name="delegate"
+        required
+        [ngClass]="delegateInput.errors?.['required'] && (delegateInput.dirty || delegateInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #delegateInput="ngModel"
+      >
+        <ng-template #selectedItem let-delegate>
+          @if (delegate) {
+          <div class="flex items-center gap-2">
+            <div>
+              {{ delegate.ci }}
+              {{ delegate.grade.abbreviation }}
+              {{ delegate.names }}
+              {{ delegate.lastName }}
+            </div>
+          </div>
+          }
+        </ng-template>
+        <ng-template let-delegate #item>
+          <div class="flex items-center gap-2">
+            <div>
+              {{ delegate.ci }}
+              {{ delegate.grade.abbreviation }}
+              {{ delegate.names }}
+              {{ delegate.lastName }}
+            </div>
+          </div>
+        </ng-template>
+      </p-select>
+      }
+    </div>
+
+    <!-- Botón Guardar -->
+    <div>
+      @if (!invitation.delegate) {
+      <p-button
+        [loading]="saveInProgress"
+        type="submit"
+        label="Enviar invitación"
+      ></p-button>
+      }@else if (!invitation.delegate.candidate){
+        <p-button
+        [loading]="saveInProgress"
+        type="button"
+        (onClick)="setAsCandidate(invitation.delegate.ci, invitation)"
+        label="Establecer como candidato"
+      ></p-button>
+      }
+    </div>
+  </div>
+</form>

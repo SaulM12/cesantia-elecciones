@@ -1,0 +1,187 @@
+<div class="custom-p flex flex-col gap-4">
+  <h1>Bienvenido a su cuenta, por favor actualice sus datos</h1>
+  @if (delegate.id) {
+  <div class="flex justify-center px-4 lg:px-80">
+    <p-card header="Actualizar datos personales" class="w-full">
+      <form
+        class="space-y-4 flex flex-col"
+        (ngSubmit)="updateDelegate(delegate)"
+      >
+        <div class="flex flex-col">
+          <h3 class="mb-1 font-semibold">Candidato</h3>
+          <p>
+            @if (delegate.candidate) {
+            SI
+            } @else {
+            NO
+            }
+          </p>
+          <h3 class="mb-1 font-semibold">Foto</h3>
+          @if (delegate.image) {
+          <img
+            class="w-36"
+            [src]="decodeImage(delegate.image)"
+            alt="foto delegado"
+          />
+          } @else {
+          <p>No registra imagen</p>
+          }
+          <p-fileUpload
+            chooseLabel="Elegir"
+            [showUploadButton]="false"
+            [showCancelButton]="false"
+            name="demo[]"
+            [multiple]="false"
+            accept="image/*"
+            [maxFileSize]="1000000"
+            [multiple]="false"
+            (onSelect)="onSelectImage($event)"
+          >
+            <ng-template #empty>
+              <div>Suelte la imagen aquí.</div>
+            </ng-template>
+            <ng-template pTemplate="content">
+              @if (uploadedFiles.length) {
+              <ul>
+                @for (file of uploadedFiles; track $index) {
+                <li>{{ file.name }} - {{ file.size }} bytes</li>
+                }
+              </ul>
+              }
+            </ng-template>
+          </p-fileUpload>
+          @if (uploadedFiles.length) {
+          <p-button
+            styleClass="mt-2"
+            label="Subir imagen"
+            [loading]="uploadInProgress"
+            (onClick)="uploadImage(delegate)"
+            severity="secondary"
+          />
+          }
+        </div>
+        <div class="flex flex-col">
+          <label for="grade" class="mb-1 font-semibold">Grado</label>
+          <input
+            id="grade"
+            type="text"
+            pInputText
+            [(ngModel)]="delegate.grade.description"
+            name="grade"
+            disabled
+          />
+        </div>
+        <div class="flex flex-col">
+          <label for="ci" class="mb-1 font-semibold">CI</label>
+          <input
+            id="ci"
+            type="text"
+            pInputText
+            [(ngModel)]="delegate.ci"
+            name="ci"
+            disabled
+          />
+        </div>
+        <div class="flex flex-col">
+          <label for="email" class="mb-1 font-semibold">Email</label>
+          <input
+            id="email"
+            type="email"
+            pInputText
+            [(ngModel)]="delegate.email"
+            disabled
+            name="email"
+          />
+        </div>
+        <div class="flex flex-col">
+          <label for="delegateType" class="mb-1 font-semibold"
+            >Delegate Type</label
+          >
+          <input
+            id="delegateType"
+            type="text"
+            pInputText
+            [value]="delegate.delegateType.description"
+            name="delegateType"
+            disabled
+          />
+        </div>
+        <div class="flex flex-col">
+          <label for="unit" class="mb-1 font-semibold">Unidad</label>
+          <input
+            disabled
+            id="unit"
+            type="text"
+            pInputText
+            [value]="delegate.unit?.description"
+            name="unit"
+          />
+        </div>
+        <div class="flex flex-col">
+          <label for="phone" class="mb-1 font-semibold">Teléfono</label>
+          <input
+            id="phone"
+            type="text"
+            pInputText
+            [(ngModel)]="delegate.phone"
+            name="phone"
+            disabled
+          />
+        </div>
+        <div class="flex flex-col">
+          <label for="names" class="mb-1 font-semibold">Nombres</label>
+          <input
+            id="names"
+            type="text"
+            pInputText
+            [(ngModel)]="delegate.names"
+            name="names"
+          />
+        </div>
+        <div class="flex flex-col">
+          <label for="lastName" class="mb-1 font-semibold"
+            >Primer Apellido</label
+          >
+          <input
+            id="lastName"
+            type="text"
+            pInputText
+            [(ngModel)]="delegate.lastName"
+            name="lastName"
+          />
+        </div>
+        <div class="flex flex-col">
+          <label for="secondLastName" class="mb-1 font-semibold"
+            >Segundo apellido</label
+          >
+          <input
+            id="secondLastName"
+            type="text"
+            pInputText
+            [(ngModel)]="delegate.secondLastName"
+            name="secondLastName"
+          />
+        </div>
+        <div class="flex flex-col">
+          <label for="homePhone" class="mb-1 font-semibold"
+            >Teléfono Fijo</label
+          >
+          <input
+            id="homePhone"
+            type="text"
+            pInputText
+            [(ngModel)]="delegate.homePhone"
+            name="homePhone"
+          />
+        </div>
+        <p-button
+          [loading]="saveInProgress"
+          type="submit"
+          label="Actualizar mis datos"
+        >
+        </p-button>
+      </form>
+    </p-card>
+  </div>
+  }
+</div>

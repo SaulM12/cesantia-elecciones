@@ -1,0 +1,64 @@
+<div class="custom-p flex flex-col gap-2">
+  <p-toolbar>
+    <ng-template #start> </ng-template>
+    <ng-template #end>
+      <p-button
+        (onClick)="exportToExcel(invitations)"
+        label="Exportar"
+        icon="pi pi-upload"
+        severity="secondary"
+      />
+    </ng-template>
+  </p-toolbar>
+  <p-table
+    [value]="invitations"
+    [loading]="isLoading"
+    [paginator]="true"
+    [rows]="10"
+  >
+    <ng-template #caption>
+      <div class="flex items-center justify-between">
+        <h1 class="m-0 text-2xl font-semibold">Gestionar Invitaciones</h1>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th id="id">Ubicación asignada</th>
+        <th id="delegate">Delegado</th>
+        <th id="status">Estado</th>
+        <th id="scanned">Escaneado</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-invitation>
+      <tr>
+        <td>
+          {{ invitation.tableEntity.quadrant.acronym }} - Mesa
+          {{ invitation.tableEntity.tableNumber }} - Silla
+          {{ invitation.chairNumber }}
+        </td>
+        <td>
+          [{{ invitation.delegate?.ci }}] {{ invitation.delegate.grade?.abbreviation }}
+          {{ invitation.delegate?.names }} {{ invitation.delegate?.lastName }}
+        </td>
+        <td>{{ getEnumEquivalency(invitation.status) }}</td>
+        <td>{{ invitation.scanned ? "Sí" : "No" }}</td>
+      </tr>
+    </ng-template>
+
+    <ng-template #emptymessage>
+      <tr>
+        <td colspan="7">No se encontraron registros.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<p-dialog
+  header="Formulario"
+  [(visible)]="showFormDialog"
+  [modal]="true"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+</p-dialog>

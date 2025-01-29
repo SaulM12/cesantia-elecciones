@@ -1,0 +1,31 @@
+<div class="custom-p flex flex-col gap-2">
+  <h2>Votación de su cuadrante</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+    @for (delegateVote of delegateVotes; track $index) {
+    <p-card [style]="{ width: '100%', overflow: 'hidden' }">
+      <ng-template #title>{{ delegateVote.candidateName }}</ng-template>
+      @if (delegateVote.image) {
+        <img
+        class="w-36 h-36 object-cover"
+        [src]="decodeImage(delegateVote.image)"
+        alt="candidato"
+      />
+        }@else { No registra imagen }
+      <ng-template #footer>
+        @if (prevDelegateVote && prevDelegateVote.candidate.id === delegateVote.candidateId) {
+            <p>VOTASTE POR ESTE CANDIDATO</p>
+        }
+        <div class="flex gap-4 mt-1">
+          <p-button
+            label="Dar voto"
+            [disabled]="voteInProgress || prevDelegateVote"
+            (onClick)="vote(delegate, delegateVote)"
+          />
+        </div>
+      </ng-template>
+    </p-card>
+    }@empty {
+    <p>No hay candidatos registrados para este cuadrante</p>
+    }
+  </div>
+</div>

@@ -1,0 +1,40 @@
+<div class="custom-p flex flex-col gap-3">
+  <h1>RESULTADOS ELECCIÓN DIRECTOR EJECUTIVO:</h1>
+  <p-button
+  severity="secondary"
+  label="Actualizar resultados"
+  icon="pi pi-refresh"
+  [loading]="loading"
+  (onClick)="getVotes()"
+/>
+  <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+    @for (directorVote of votes; track $index) {
+    <p-card [style]="{ width: '100%', overflow: 'hidden' }">
+      <ng-template #title>{{ directorVote.electionName }}</ng-template>
+      <div class="flex justify-center">
+        @if (directorVote.image) {
+          <img
+          class="w-36 h-36 object-cover"
+          [src]="decodeImage(directorVote.image)"
+          alt="candidato"
+        />
+        }@else { No registra imagen }
+      </div>
+
+      <ng-template #footer>
+        <div class="flex gap-4 mt-1">
+          <p>Votos totales: {{ directorVote.voteCount }}</p>
+        </div>
+      </ng-template>
+    </p-card>
+    }@empty {
+    <p>No hay candidatos registrados</p>
+    }
+  </div>
+  <p-chart
+    type="pie"
+    [data]="data"
+    [options]="options"
+    class="w-full md:w-[30rem]"
+  />
+</div>

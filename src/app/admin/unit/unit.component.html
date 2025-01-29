@@ -1,0 +1,79 @@
+<div class="custom-p flex flex-col gap-2">
+  <p-toolbar>
+    <ng-template #start>
+      <p-button
+        label="Añadir"
+        (onClick)="showDialog()"
+        icon="pi pi-plus"
+        class="mr-2"
+      />
+    </ng-template>
+    <ng-template #end>
+      <!-- <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" auto customUpload class="mr-2 inline-block" [chooseButtonProps]="{ severity: 'secondary' }" /> -->
+      <p-button
+        (onClick)="exportToExcel(units)"
+        label="Exportar"
+        icon="pi pi-upload"
+        severity="secondary"
+      />
+    </ng-template>
+  </p-toolbar>
+  <p-table [value]="units" [loading]="isLoading" [paginator]="true" [rows]="10">
+    <ng-template #caption>
+      <div class="flex items-center justify-between">
+        <h1 class="m-0 text-2xl font-semibold">Gestionar unidades</h1>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th id="id">ID</th>
+        <th id="acronym">Abreviatura</th>
+        <th id="description">Descripción</th>
+        <th id="acciones">Acciones</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-unit>
+      <tr>
+        <td>{{ unit.id }}</td>
+        <td>{{ unit.abbreviation }}</td>
+        <td>{{ unit.description }}</td>
+        <td>
+          <div class="flex flex-wrap gap-2">
+            <p-button
+              icon="pi pi-pencil"
+              (onClick)="showDialogToEdit(unit)"
+              [rounded]="true"
+              severity="info"
+            />
+            <p-button
+              (onClick)="delete(unit.id)"
+              icon="pi pi-times"
+              [rounded]="true"
+              severity="danger"
+            />
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template #emptymessage>
+      <tr>
+        <td colspan="4">No se encontraron registros.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<p-dialog
+  header="Formulario"
+  [(visible)]="showFormDialog"
+  [modal]="true"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  @if (showFormDialog) {
+  <unit-form [unit]="selectedUnit" (onSave)="getAll()"></unit-form>
+
+  }
+</p-dialog>

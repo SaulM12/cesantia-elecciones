@@ -1,0 +1,37 @@
+<div class="custom-p flex flex-col gap-2">
+  <h2>Votación para director general</h2>
+  <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+    @for (directorVote of directorVotes; track $index) {
+    <p-card [style]="{ width: '100%', overflow: 'hidden' }">
+      <ng-template #title>{{ directorVote.electionName }}</ng-template>
+      @if (directorVote.image) {
+      <img
+        class="w-36 h-36 object-cover"
+        [src]="decodeImage(directorVote.image)"
+        alt="candidato"
+      />
+      }@else { No registra imagen }
+      <ng-template #footer>
+        <div class="flex gap-4 mt-1">
+          @if (!prevDelegateVote) {
+          <p-button
+            label="Dar voto"
+            [disabled]="voteInProgress"
+            (onClick)="vote(delegate, directorVote.id)"
+          />
+          } @if (prevDelegateVote && prevDelegateVote.nominee.id ===
+          directorVote.id) {
+            <p-button
+            label="Votaste por este candidato"
+            [disabled]="true"
+            (onClick)="vote(delegate, directorVote.id)"
+          />
+           }
+        </div>
+      </ng-template>
+    </p-card>
+    }@empty {
+    <p>No hay candidatos registrados para este cuadrante</p>
+    }
+  </div>
+</div>

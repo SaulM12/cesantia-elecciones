@@ -37,6 +37,19 @@
           }
         }
       }
+    },
+    {
+      "type": "npm",
+      "script": "install-tailwindcss-primeui",
+      "label": "npm: install-tailwindcss-primeui",
+      "command": "npm",
+      "args": [
+        "i",
+        "tailwindcss-primeui"
+      ],
+      "presentation": {
+        "reveal": "silent"
+      }
     }
   ]
 }
