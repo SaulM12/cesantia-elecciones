@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
+import { AdminRoleGuard } from './helpers/guards/admin-role.guard';
 
 export const routes: Routes = [
   {
@@ -11,7 +12,7 @@ export const routes: Routes = [
   {
     path: 'admin',
     loadChildren: () => import('./admin/admin.routes'),
-    //canActivate: [AdminGuard],
+    canActivate: [AdminRoleGuard],
   },
   {
     path: 'delegate',
