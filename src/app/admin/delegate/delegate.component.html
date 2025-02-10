@@ -47,14 +47,14 @@
           <td>{{ delegate.ci }}</td>
           <td>{{ delegate.phone }}</td>
           <td>
-            {{ delegate.names }} {{ delegate.lastName }}
+            {{ delegate.names }}
             {{ delegate.secondLastName }}
           </td>
           <td [ngClass]="delegate.active ? 'text-green-700' : 'text-red-700'">
             {{ delegate.active ? 'SI' : 'NO' }}
           </td>
           <td>{{ delegate.grade.description }}</td>
-          <td>{{ delegate.delegateType.description }}</td>
+          <td>{{ delegate.delegateType?.description }}</td>
           <td>
             <div class="flex flex-wrap gap-2">
               <p-button

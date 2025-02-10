@@ -1,37 +1,64 @@
-<div class="custom-p flex flex-col gap-2">
-  <h2>Votación para director general</h2>
-  <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+<div class="custom-p flex flex-col gap-4 p-4 bg-white rounded-lg shadow-sm h-screen">
+  <h2 class="text-2xl font-bold text-gray-900 text-center">
+    Votación para Director General
+  </h2>
+
+  <div
+    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+  >
     @for (directorVote of directorVotes; track $index) {
-    <p-card [style]="{ width: '100%', overflow: 'hidden' }">
-      <ng-template #title>{{ directorVote.electionName }}</ng-template>
-      @if (directorVote.image) {
-      <img
-        class="w-36 h-36 object-cover"
-        [src]="decodeImage(directorVote.image)"
-        alt="candidato"
-      />
-      }@else { No registra imagen }
+    <p-card
+      [style]="{ width: '100%', overflow: 'hidden', height:'100%' }"
+      class="shadow-sm rounded-lg"
+    >
+      <ng-template #title>
+        <h4 class="text-lg font-semibold text-center text-gray-900">
+          {{ directorVote.electionName }}
+        </h4>
+      </ng-template>
+
+      <div class="flex justify-center p-2">
+        @if (directorVote.image) {
+        <img
+          class="w-36 h-36 rounded-full border-2 border-gray-300 object-cover"
+          [src]="decodeImage(directorVote.image)"
+          alt="Candidato"
+        />
+        } @else {
+        <p class="text-gray-500 text-sm text-center">No registra imagen</p>
+        }
+      </div>
+
       <ng-template #footer>
-        <div class="flex gap-4 mt-1">
+        <div class="text-center">
           @if (!prevDelegateVote) {
           <p-button
             label="Dar voto"
+            class="mt-2"
             [disabled]="voteInProgress"
-            (onClick)="vote(delegate, directorVote.id)"
+            (onClick)="vote(delegate, directorVote.id, userIp)"
           />
           } @if (prevDelegateVote && prevDelegateVote.nominee.id ===
           directorVote.id) {
-            <p-button
+          <p class="text-green-600 font-semibold">
+            ✔️ Votaste por este candidato
+          </p>
+          @if (!prevDelegateVote) {
+          <p-button
             label="Votaste por este candidato"
+            class="mt-2"
             [disabled]="true"
-            (onClick)="vote(delegate, directorVote.id)"
+            pTooltip="Ya emitiste tu voto"
+            tooltipPosition="top"
           />
-           }
+          } }
         </div>
       </ng-template>
     </p-card>
-    }@empty {
-    <p>No hay candidatos registrados para este cuadrante</p>
+    } @empty {
+    <p class="text-center text-gray-500 text-lg col-span-full">
+      No hay candidatos registrados para este cuadrante.
+    </p>
     }
   </div>
 </div>

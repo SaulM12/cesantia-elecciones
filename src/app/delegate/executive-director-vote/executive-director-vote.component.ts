@@ -11,6 +11,7 @@ import { DelegateService } from '../../helpers/services/delegate/delegate.servic
 import { ToastService } from '../../helpers/services/system/toast.service';
 import { switchMap } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-executive-director-vote',
@@ -28,16 +29,32 @@ export class ExecutiveDirectorVoteComponent {
   };
   voteInProgress: boolean = false;
   prevDelegateVote: ExecutiveDirectorVote | undefined;
+  userIp = '';
   constructor(
     private readonly authService: AuthService,
     private readonly delegateService: DelegateService,
     private readonly executiveDirectorVoteService: ExecutiveDirectorVoteService,
     private readonly toastService: ToastService,
-    private readonly sanitizer: DomSanitizer
+    private readonly sanitizer: DomSanitizer,
+    private readonly http: HttpClient
   ) {}
 
   ngOnInit(): void {
     this.getUserDetails();
+    this.getUserIp();
+  }
+
+  getUserIp(): void {
+    this.http
+      .get<{ ip: string }>('https://api64.ipify.org?format=json')
+      .subscribe(
+        (response) => {
+          this.userIp = response.ip;
+        },
+        (error) => {
+          console.error('Error al obtener la IP:', error);
+        }
+      );
   }
 
   getUserDetails() {
@@ -66,9 +83,9 @@ export class ExecutiveDirectorVoteComponent {
     });
   }
 
-  vote(delegate: Delegate, nomineId: number) {
+  vote(delegate: Delegate, nomineId: number, ip:string) {
     this.voteInProgress = true;
-    this.executiveDirectorVoteService.castVote(nomineId, delegate).subscribe({
+    this.executiveDirectorVoteService.castVote(nomineId, delegate, ip).subscribe({
       next: () => {
         this.toastService.showSuccess('Voto', 'Voto registrado');
         this.voteInProgress = false;

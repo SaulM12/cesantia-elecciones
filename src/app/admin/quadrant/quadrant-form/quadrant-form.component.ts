@@ -1,3 +1,4 @@
+import { ElectionTypeService } from './../../../helpers/services/elections/election-type.service';
 import {
   Component,
   EventEmitter,
@@ -12,10 +13,19 @@ import { ToastService } from '../../../helpers/services/system/toast.service';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { NgClass } from '@angular/common';
-
+import { ElectionType } from '../../../helpers/models/elections/election-type';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { InputNumber } from 'primeng/inputnumber';
 @Component({
   selector: 'quadrant-form',
-  imports: [InputTextModule, FormsModule, ButtonModule, NgClass],
+  imports: [
+    InputTextModule,
+    FormsModule,
+    ButtonModule,
+    NgClass,
+    MultiSelectModule,
+    InputNumber
+  ],
   templateUrl: './quadrant-form.component.html',
   styleUrl: './quadrant-form.component.scss',
 })
@@ -23,14 +33,17 @@ export class QuadrantFormComponent {
   edit: boolean = false;
   submitted: boolean = false;
   saveInProgress: boolean = false;
+  @Input('electionTypes') electionTypes: ElectionType[] = [];
   @Input('quadrant') quadrant: Quadrant = {} as Quadrant;
   @ViewChild('form') form!: NgForm;
   @Output('onSave') quadrantSaved = new EventEmitter<Quadrant>();
 
   constructor(
     private readonly quadrantService: QuadrantService,
-    private readonly toastService: ToastService
+    private readonly toastService: ToastService,
+
   ) {}
+
 
   ngOnChanges() {
     if (this.quadrant?.id) {
@@ -39,6 +52,8 @@ export class QuadrantFormComponent {
       this.edit = false;
     }
   }
+
+ 
 
   save() {
     if (!this.form.valid) {

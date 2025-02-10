@@ -14,8 +14,8 @@ export class ExecutiveDirectorVoteService {
 
   constructor(private readonly http: HttpClient) {}
 
-  castVote(nomineeId: number, delegate: Delegate) {
-    const url = `${this.apiUrl}/${nomineeId}/vote`;
+  castVote(nomineeId: number, delegate: Delegate, userIp: string) {
+    const url = `${this.apiUrl}/${nomineeId}/vote/${userIp}`;
     return this.http.post<void>(url, delegate, { withCredentials: true });
   }
 
@@ -29,5 +29,9 @@ export class ExecutiveDirectorVoteService {
   getVoteByDelegateCi(ci: string) {
     const url = `${this.apiUrl}/delegate/${ci}`;
     return this.http.get<ExecutiveDirectorVote>(url, { withCredentials: true });
+  }
+
+  resetElection() {
+    return this.http.delete(`${this.apiUrl}/reset`, { withCredentials: true });
   }
 }

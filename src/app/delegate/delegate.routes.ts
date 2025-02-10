@@ -3,6 +3,7 @@ import { DelegateHomeComponent } from './delegate-home/delegate-home.component';
 import { InvitationComponent } from './invitation/invitation.component';
 import { QuadrantVoteComponent } from './quadrant-vote/quadrant-vote.component';
 import { ExecutiveDirectorVoteComponent } from './executive-director-vote/executive-director-vote.component';
+import { ElectionsMenuComponent } from './elections-menu/elections-menu.component';
 
 const delegateRoutes: Routes = [
   {
@@ -17,7 +18,7 @@ const delegateRoutes: Routes = [
       },
       {
         path: 'inicio',
-        component: DelegateHomeComponent,
+        component: ElectionsMenuComponent,
         title: 'Inicio',
       },
       {
@@ -26,7 +27,7 @@ const delegateRoutes: Routes = [
         title: 'Invitación',
       },
       {
-        path: 'votacion-cuadrante',
+        path: 'votacion-cuadrante/:id',
         component: QuadrantVoteComponent,
         title: 'Votación por cuadrante',
       },

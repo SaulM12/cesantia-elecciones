@@ -8,6 +8,8 @@ import { Dialog } from 'primeng/dialog';
 import { QuadrantFormComponent } from './quadrant-form/quadrant-form.component';
 import { ToastService } from '../../helpers/services/system/toast.service';
 import { FileService } from '../../helpers/services/system/file.service';
+import { ElectionTypeService } from '../../helpers/services/elections/election-type.service';
+import { ElectionType } from '../../helpers/models/elections/election-type';
 
 @Component({
   selector: 'app-quadrant',
@@ -20,15 +22,23 @@ export class QuadrantComponent {
   isLoading: boolean = true;
   showFormDialog: boolean = false;
   selectedQuadrant: Quadrant = {} as Quadrant;
-
+electionTypes: ElectionType[] = [];
   constructor(
     private readonly quadrantService: QuadrantService,
     private readonly toastService: ToastService,
-    private readonly fileService: FileService
+    private readonly fileService: FileService,
+    private readonly electionTypeService: ElectionTypeService
   ) {}
 
   ngOnInit() {
     this.getAll();
+    this.getElectionTypes();
+  }
+
+  getElectionTypes() {
+    this.electionTypeService.getAllElectionTypes().subscribe((data) => {
+      this.electionTypes = data
+    });
   }
 
   showDialog() {

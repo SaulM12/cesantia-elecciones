@@ -11,10 +11,13 @@ import { Period } from '../../helpers/models/organization/period';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { ElectionType } from '../../helpers/models/elections/election-type';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-quadrant-vote',
-  imports: [CardModule, ButtonModule],
+  imports: [CardModule, ButtonModule, RouterModule],
   templateUrl: './quadrant-vote.component.html',
   styleUrl: './quadrant-vote.component.scss',
 })
@@ -27,17 +30,35 @@ export class QuadrantVoteComponent {
     yearPeriod: '2025',
   };
   voteInProgress: boolean = false;
+  electionType!: ElectionType;
   prevDelegateVote: DelegateVote | undefined;
+  userIp: string = '';
   constructor(
     private readonly authService: AuthService,
     private readonly delegateService: DelegateService,
     private readonly delegateVoteService: DelegateVoteService,
     private readonly toastService: ToastService,
-    private readonly sanitizer:DomSanitizer
+    private readonly sanitizer: DomSanitizer,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly router: Router,
+    private readonly http: HttpClient
   ) {}
 
   ngOnInit(): void {
     this.getUserDetails();
+    this.getUserIp();
+  }
+  getUserIp(): void {
+    this.http
+      .get<{ ip: string }>('https://api64.ipify.org?format=json')
+      .subscribe(
+        (response) => {
+          this.userIp = response.ip;
+        },
+        (error) => {
+          console.error('Error al obtener la IP:', error);
+        }
+      );
   }
 
   getUserDetails() {
@@ -49,15 +70,37 @@ export class QuadrantVoteComponent {
         })
       )
       .subscribe((delegateInfo) => {
+        let id = this.activatedRoute.snapshot.paramMap.get('id');
         this.delegate = delegateInfo;
+        this.isElectionEnabled(+id!);
         this.getDelegateVoteCountByQuadrantId(delegateInfo.grade.quadrant.id);
         this.verifyVote(delegateInfo.ci);
       });
   }
 
+  isElectionEnabled(electionId: number) {
+    const foundElection = this.delegate?.grade?.quadrant?.electionTypes?.find(
+      (e) => e.id === electionId
+    );
+
+    if (foundElection) {
+      this.electionType = foundElection; // Asigna el objeto encontrado
+      if (!foundElection.enabled) {
+        this.toastService.showError('No autorizado', 'Elección no habilitada');
+        this.router.navigateByUrl('delegate');
+      } // Retorna si está habilitado
+    } else {
+      this.toastService.showError('No autorizado', 'Elección no encontrada');
+      this.router.navigateByUrl('delegate');
+    }
+
+    // Si no encuentra la elección, retorna false
+  }
+
   getDelegateVoteCountByQuadrantId(quadrantId: number) {
+    let id = this.activatedRoute.snapshot.paramMap.get('id');
     this.delegateVoteService
-      .getCandidatesWithVoteCountByQuadrantId(quadrantId)
+      .getCandidatesWithVoteCountByQuadrantAndElectionType(quadrantId, +id!)
       .subscribe({
         next: (delegateVoteCount) => {
           this.delegateVotes = delegateVoteCount;
@@ -73,13 +116,20 @@ export class QuadrantVoteComponent {
     return this.sanitizer.bypassSecurityTrustUrl(imageUrl);
   }
 
-  vote(delegate: Delegate, delegateVoteCountDto: DelegateVoteCountDto) {
+  vote(
+    delegate: Delegate,
+    delegateVoteCountDto: DelegateVoteCountDto,
+    electionType: ElectionType,
+    ip: string
+  ) {
     let delegateVote = {
       delegate: delegate,
       candidate: { id: delegateVoteCountDto.candidateId },
       period: this.period,
       voteDate: new Date(),
       voteControl: `${delegate.ci}`,
+      electionType: electionType,
+      userIp: ip,
     };
     this.voteInProgress = true;
     this.delegateVoteService.vote(delegateVote).subscribe({
@@ -96,7 +146,8 @@ export class QuadrantVoteComponent {
   }
 
   verifyVote(delegateCi: string) {
-    this.delegateVoteService.getVoteByDelegateCi(delegateCi).subscribe({
+    let id = this.activatedRoute.snapshot.paramMap.get('id');
+    this.delegateVoteService.getVoteByDelegateCi(delegateCi, +id!).subscribe({
       next: (delegateVote) => {
         if (delegateVote) {
           this.prevDelegateVote = delegateVote;

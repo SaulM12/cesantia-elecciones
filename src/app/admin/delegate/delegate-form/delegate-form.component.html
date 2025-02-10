@@ -5,7 +5,11 @@
       <label for="active" class="font-semibold">Activo</label>
       <p-toggleswitch name="active" [(ngModel)]="delegate.active" />
     </div>
-
+       <!-- Campo Candidato -->
+    <div class="flex flex-col gap-1">
+      <label for="candidate" class="font-semibold">Candidato</label>
+      <p-toggleswitch name="candidate" [(ngModel)]="delegate.candidate" />
+    </div>
     <!-- Campo CI -->
     <div class="flex flex-col gap-1">
       <label for="ci" class="font-semibold">CI</label>
@@ -38,7 +42,7 @@
 
     <!-- Campo Nombres -->
     <div class="flex flex-col gap-1">
-      <label for="names" class="font-semibold">Nombres</label>
+      <label for="names" class="font-semibold">Nombre</label>
       <input
         id="names"
         type="text"
@@ -51,33 +55,7 @@
       />
     </div>
 
-    <!-- Campo Apellidos -->
-    <div class="flex flex-col gap-1">
-      <label for="lastName" class="font-semibold">Apellido Paterno</label>
-      <input
-        id="lastName"
-        type="text"
-        pInputText
-        [(ngModel)]="delegate.lastName"
-        name="lastName"
-        required
-        [ngClass]="lastNameInput.errors?.['required'] && (lastNameInput.dirty || lastNameInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
-        #lastNameInput="ngModel"
-      />
-    </div>
-    <div class="flex flex-col gap-1">
-      <label for="secondLastName" class="font-semibold">Apellido Materno</label>
-      <input
-        id="secondLastName"
-        type="text"
-        pInputText
-        [(ngModel)]="delegate.secondLastName"
-        name="secondLastName"
-        required
-        [ngClass]="secondLastNameInput.errors?.['required'] && (secondLastNameInput.dirty || secondLastNameInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
-        #secondLastNameInput="ngModel"
-      />
-    </div>
+
 
     <!-- Campo Teléfono -->
     <div class="flex flex-col gap-1">
@@ -137,18 +115,16 @@
     <!-- Campo Unidad -->
     <div class="flex flex-col gap-1">
       <label for="unit" class="font-semibold">Unidad</label>
-      <p-select
-        [options]="units"
-        [(ngModel)]="delegate.unit"
-        [style]="{ width: '100%' }"
-        optionLabel="description"
-        placeholder="Seleccione la unidad"
-        appendTo="body"
+      <input
+        id="unit"
+        type="text"
+        pInputText
+        [(ngModel)]="delegate.unitName"
         name="unit"
         required
-        [ngClass]="unit.errors?.['required'] && (unit.dirty || unit.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
-        #unit="ngModel"
-      ></p-select>
+        [ngClass]="unitInput.errors?.['required'] && (unitInput.dirty || unitInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #unitInput="ngModel"
+      />
     </div>
 
     <!-- Campo Tipo de Delegado -->
@@ -162,7 +138,6 @@
         placeholder="Seleccione un tipo de delegado"
         appendTo="body"
         name="delegateType"
-        required
         [ngClass]="delegateTypeInput.errors?.['required'] && (delegateTypeInput.dirty || delegateTypeInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
         #delegateTypeInput="ngModel"
       ></p-select>

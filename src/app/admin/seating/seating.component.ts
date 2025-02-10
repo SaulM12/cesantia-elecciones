@@ -84,6 +84,7 @@ export class SeatingComponent {
       acronym: quadrantDto.acronym,
       description: quadrantDto.description,
       quadrantOrder: quadrantDto.quadrantOrder,
+      electionTypes:[]
     };
 
     this.selectedInvitation = {

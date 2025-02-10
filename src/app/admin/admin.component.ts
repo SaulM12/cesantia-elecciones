@@ -43,6 +43,11 @@ export class AdminComponent {
           routerLink: '/admin/cuadrantes',
         },
         {
+          label:'Tipo elecciones',
+          icon: 'pi pi-fw pi-slack',
+          routerLink: '/admin/tipo-elecciones',
+        },
+        {
           label: 'Grados',
           icon: 'pi pi-user-minus',
           routerLink: '/admin/grados',
@@ -73,7 +78,11 @@ export class AdminComponent {
           icon: 'pi pi-fw pi-slack',
           routerLink: '/admin/asientos',
         },
-
+        {
+          label: 'Candidatos',
+          icon: 'pi pi-fw pi-users',
+          routerLink: '/admin/candidatos',
+        },
         {
           label: 'Invitaciones',
           icon: 'pi pi-fw pi-ticket',

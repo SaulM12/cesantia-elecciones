@@ -90,8 +90,6 @@ export class DelegateComponent {
       [headers.id]: delegate.id,
       [headers.ci]: delegate.ci,
       [headers.names]: delegate.names,
-      [headers.lastName]: delegate.lastName,
-      [headers.secondLastName]: delegate.secondLastName,
       [headers.phone]: delegate.phone,
       [headers.active]: delegate.active ? 'Sí' : 'No',
       [headers.grade]: delegate.grade?.description || 'N/A',

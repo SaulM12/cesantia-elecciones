@@ -1,31 +1,11 @@
 <div class="custom-p flex flex-col gap-2">
-  <p-toolbar>
-    <ng-template #start>
-      <p-button
-        label="Habilitar Votación"
-        (onClick)="changeDelegateVoteStatus(true)"
-        icon="pi pi-lock-open"
-        class="mr-2"
-        severity="success"
-      />
-      <p-button
-        label="Restringir Votación"
-        (onClick)="changeDelegateVoteStatus(false)"
-        icon="pi pi-lock"
-        class="mr-2"
-        severity="danger"
-      />
-    </ng-template>
-    <ng-template #end>
-      <!-- <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" auto customUpload class="mr-2 inline-block" [chooseButtonProps]="{ severity: 'secondary' }" /> -->
-    </ng-template>
-  </p-toolbar>
+ 
 
   <p-card header="Elecciones activas">
     <h3>Cuadrantes</h3>
     <div class="flex gap-2 flex-wrap">
       @for (quadrant of quadrants; track $index) {
-      <a [routerLink]="quadrant.id.toString()" class="p-button">
+      <a [routerLink]="quadrant.id.toString()" class="p-button" pButton>
         {{ quadrant.description }}
       </a>
       }

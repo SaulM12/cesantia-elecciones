@@ -1,0 +1,106 @@
+<div class="custom-p flex flex-col gap-2">
+  <p-toolbar>
+    <ng-template #start>
+      <div class="flex gap-2">
+        <p-select
+          [options]="quadrants"
+          [(ngModel)]="selectedQuadrant"
+          optionLabel="description"
+          placeholder="Seleccione un cuadrante"
+          class=""
+          name="selectedQuadrant"
+          (onChange)="setElectionTypes($event)"
+        />
+        <p-select
+          [options]="electionTypes"
+          [(ngModel)]="selectedElection"
+          optionLabel="name"
+          name="selectedElection"
+          placeholder="Tipo de elección"
+          class=""
+          (onChange)="getCandidates()"
+        />
+      </div>
+    </ng-template>
+    <ng-template #center>
+      <p-button
+        label="Añadir"
+        (onClick)="showDialog()"
+        icon="pi pi-plus"
+        class="mr-2"
+        [disabled]="!selectedElection"
+      />
+    </ng-template>
+  </p-toolbar>
+
+  <p-table
+    [value]="candidates"
+    [loading]="loading"
+    [paginator]="true"
+    [rows]="10"
+  >
+    <ng-template #caption>
+      <div class="flex items-center justify-between">
+        <h1 class="m-0 text-2xl font-semibold">Candidatos de elecciones</h1>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th id="id">ID</th>
+        <th id="activo">Activo</th>
+        <th id="name">Grado</th>
+        <th id="name">Nombre</th>
+        <th id="description">Candidatura</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-electionType>
+      <tr>
+        <td>{{ electionType.id }}</td>
+        <td [ngClass]="electionType.active ? 'SI' : 'NO'">
+          {{ electionType.active ? "SI" : "NO" }}
+        </td>
+        <td>{{ electionType.delegate.grade.abbreviation }}</td>
+        <td>{{ electionType.delegate.names }}</td>
+        <td>{{ electionType.electionType.name }}</td>
+      </tr>
+    </ng-template>
+
+    <ng-template #emptymessage>
+      <tr>
+        <td colspan="5">No se encontraron registros.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<p-dialog
+  header="Formulario"
+  [(visible)]="showFormDialog"
+  [modal]="true"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  @if (showFormDialog) {
+  <div class="flex flex-col gap-3">
+    <p-select
+      [options]="delegates"
+      [(ngModel)]="selectedDelegate"
+      optionLabel="names"
+      name="selectedDelegate"
+      [filter]="true"
+      filterBy="names"
+      placeholder="Seleccione el delegado para que sea candidato"
+      class="w-full"
+      appendTo="body"
+    />
+    <p-button
+      label="Establecer como candidato"
+      [disabled]="!selectedDelegate"
+      [loading]="saveInProgress"
+      (onClick)="assignCandidate()"
+    ></p-button>
+  </div>
+
+  }
+</p-dialog>

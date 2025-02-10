@@ -61,7 +61,6 @@ export class DelegateHomeComponent {
 
   updateDelegate(delegate: Delegate) {
     this.saveInProgress = true;
-    delegate.completeInfo = true;
     this.delegateService.update(delegate).subscribe({
       next: () => {
         this.toastService.showSuccess(

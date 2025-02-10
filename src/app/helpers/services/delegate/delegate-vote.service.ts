@@ -13,13 +13,17 @@ export class DelegateVoteService {
 
   constructor(private readonly http: HttpClient) {}
 
-  getCandidatesWithVoteCountByQuadrantId(
-    quadrantId: number
+  getCandidatesWithVoteCountByQuadrantAndElectionType(
+    quadrantId: number,
+    electionTypeId: number
   ): Observable<DelegateVoteCountDto[]> {
-    return this.http.get<DelegateVoteCountDto[]>(
-      `${this.apiUrl}/candidates-by-quadrant/${quadrantId}`,
-      { withCredentials: true }
-    );
+    return this.http.get<DelegateVoteCountDto[]>(`${this.apiUrl}/candidates`, {
+      params: {
+        quadrantId,
+        electionTypeId,
+      },
+      withCredentials: true,
+    });
   }
 
   vote(delegateVote: any): Observable<void> {
@@ -28,9 +32,23 @@ export class DelegateVoteService {
     });
   }
 
-  getVoteByDelegateCi(ci: string): Observable<DelegateVote> {
-    return this.http.get<DelegateVote>(`${this.apiUrl}/by-delegate-ci/${ci}`, {
-      withCredentials: true,
-    });
+  getVoteByDelegateCi(
+    ci: string,
+    electionTypeId: number
+  ): Observable<DelegateVote> {
+    return this.http.get<DelegateVote>(
+      `${this.apiUrl}/by-delegate-ci/${ci}/${electionTypeId}`,
+      {
+        withCredentials: true,
+      }
+    );
+  }
+
+  resetElection(
+    electionTypeId: number,
+    quadrantId: number
+  ): Observable<string> {
+    const url = `${this.apiUrl}/reset-election/${electionTypeId}/quadrant/${quadrantId}`;
+    return this.http.delete<string>(url, { withCredentials: true });
   }
 }

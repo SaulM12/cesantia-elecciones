@@ -1,11 +1,13 @@
 import { InvitationStatus } from "../../enums/initation_status";
 import { Delegate } from "../delegate/delegate";
+import { ElectionType } from "../elections/election-type";
 
 export interface Quadrant {
   id: number;
   acronym: string;
   description: string;
   quadrantOrder: number;
+  electionTypes:ElectionType[]
 }
 
 export interface QuadrantDto {

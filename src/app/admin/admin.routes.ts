@@ -13,6 +13,8 @@ import { ElectionsComponent } from './elections/elections.component';
 import { ElectionDetailComponent } from './elections/election-detail/election-detail.component';
 import { ExecutiveDirectorNomineeComponent } from './executive-director-nominee/executive-director-nominee.component';
 import { ElectionsExecutiveDirectorComponent } from './elections/elections-executive-director/elections-executive-director.component';
+import { ElectionTypeComponent } from './election-type/election-type.component';
+import { CandidateComponent } from './candidate/candidate.component';
 
 const routes: Routes = [
   {
@@ -87,14 +89,23 @@ const routes: Routes = [
       },
       {
         path: 'votaciones-director-general',
-        component:ElectionsExecutiveDirectorComponent,
-        title: 'Votaciones para Director General'
-
+        component: ElectionsExecutiveDirectorComponent,
+        title: 'Votaciones para Director General',
       },
       {
-        path:'terna-director-general',
+        path: 'terna-director-general',
         component: ExecutiveDirectorNomineeComponent,
-        title: 'Terna para Director General'
+        title: 'Terna para Director General',
+      },
+      {
+        path: 'tipo-elecciones',
+        component: ElectionTypeComponent,
+        title: 'Tipos elecciones',
+      },
+      {
+        path: 'candidatos',
+        component: CandidateComponent,
+        title: 'Candidatos',
       },
       {
         path: '**',

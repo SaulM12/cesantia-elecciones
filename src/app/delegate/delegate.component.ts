@@ -47,23 +47,6 @@ export class DelegateComponent {
         routerLink: 'inicio',
       },
       {
-        label: 'Pase digital',
-        icon: 'pi pi-id-card',
-        routerLink: 'invitacion',
-      },
-      {
-        label: 'Votación cuadrante',
-        icon: 'pi pi-mobile',
-        routerLink: 'votacion-cuadrante',
-        disabled: !delegate.enableToVote && !delegate.completeInfo,
-      },
-      {
-        label: 'Votación director general',
-        icon: 'pi pi-tablet',
-        routerLink: 'votacion-director',
-        disabled: !delegate.enableToVote && !delegate.completeInfo,
-      },
-      {
         label: 'Cerrar sesión',
         icon: 'pi pi-sign-out',
         command: () => {

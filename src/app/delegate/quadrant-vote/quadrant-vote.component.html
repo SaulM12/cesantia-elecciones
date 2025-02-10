@@ -1,31 +1,54 @@
-<div class="custom-p flex flex-col gap-2">
-  <h2>Votación de su cuadrante</h2>
-  <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+<div class="custom-p flex flex-col gap-4 p-4 bg-white rounded-lg shadow-sm h-screen">
+  <h2 class="text-2xl font-bold text-gray-900 text-center">
+    Votación de su Cuadrante
+  </h2>
+
+  @if (electionType) {
+    <h3 class="text-lg font-semibold text-gray-700 text-center">
+      {{ electionType.name }}
+    </h3>
+  }
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
     @for (delegateVote of delegateVotes; track $index) {
-    <p-card [style]="{ width: '100%', overflow: 'hidden' }">
-      <ng-template #title>{{ delegateVote.candidateName }}</ng-template>
-      @if (delegateVote.image) {
-        <img
-        class="w-36 h-36 object-cover"
-        [src]="decodeImage(delegateVote.image)"
-        alt="candidato"
-      />
-        }@else { No registra imagen }
-      <ng-template #footer>
-        @if (prevDelegateVote && prevDelegateVote.candidate.id === delegateVote.candidateId) {
-            <p>VOTASTE POR ESTE CANDIDATO</p>
-        }
-        <div class="flex gap-4 mt-1">
-          <p-button
-            label="Dar voto"
-            [disabled]="voteInProgress || prevDelegateVote"
-            (onClick)="vote(delegate, delegateVote)"
-          />
+      <p-card [style]="{ width: '100%', overflow: 'hidden', height:'100%' }" class="shadow-sm rounded-lg">
+        <ng-template #title>
+          <h4 class="text-lg font-semibold text-center text-gray-900">
+            {{ delegateVote.candidateName }}
+          </h4>
+        </ng-template>
+
+        <div class="flex justify-center p-2">
+          @if (delegateVote.image) {
+            <img
+              class="w-36 h-36 rounded-full border-2 border-gray-300 object-cover"
+              [src]="decodeImage(delegateVote.image)"
+              alt="Candidato"
+            />
+          } @else { 
+            <p class="text-gray-500 text-sm text-center">No registra imagen</p> 
+          }
         </div>
-      </ng-template>
-    </p-card>
-    }@empty {
-    <p>No hay candidatos registrados para este cuadrante</p>
+
+        <ng-template #footer>
+          <div class="text-center">
+            @if (prevDelegateVote && prevDelegateVote.candidate.id === delegateVote.candidateId) {
+              <p class="text-green-600 font-semibold">✔️ Votaste por este candidato</p>
+            }
+            @if (!prevDelegateVote) {
+              <p-button
+              label="Dar voto"
+              class="mt-2"
+              (onClick)="vote(delegate, delegateVote, electionType, userIp)"
+            />
+            }
+          </div>
+        </ng-template>
+      </p-card>
+    } @empty {
+      <p class="text-center text-gray-500 text-lg col-span-full">
+        No hay candidatos registrados para este cuadrante.
+      </p>
     }
   </div>
 </div>

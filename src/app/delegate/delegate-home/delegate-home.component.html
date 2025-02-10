@@ -15,17 +15,7 @@
             } @else {
             NO
             }
-          </p>
-          <h3 class="mb-1 font-semibold">Foto</h3>
-          @if (delegate.image) {
-          <img
-            class="w-36"
-            [src]="decodeImage(delegate.image)"
-            alt="foto delegado"
-          />
-          } @else {
-          <p>No registra imagen</p>
-          }
+       
           <p-fileUpload
             chooseLabel="Elegir"
             [showUploadButton]="false"
@@ -101,7 +91,7 @@
             id="delegateType"
             type="text"
             pInputText
-            [value]="delegate.delegateType.description"
+            [value]="delegate.delegateType?.description"
             name="delegateType"
             disabled
           />
@@ -113,7 +103,7 @@
             id="unit"
             type="text"
             pInputText
-            [value]="delegate.unit?.description"
+            [value]="delegate.unitName"
             name="unit"
           />
         </div>
@@ -138,42 +128,7 @@
             name="names"
           />
         </div>
-        <div class="flex flex-col">
-          <label for="lastName" class="mb-1 font-semibold"
-            >Primer Apellido</label
-          >
-          <input
-            id="lastName"
-            type="text"
-            pInputText
-            [(ngModel)]="delegate.lastName"
-            name="lastName"
-          />
-        </div>
-        <div class="flex flex-col">
-          <label for="secondLastName" class="mb-1 font-semibold"
-            >Segundo apellido</label
-          >
-          <input
-            id="secondLastName"
-            type="text"
-            pInputText
-            [(ngModel)]="delegate.secondLastName"
-            name="secondLastName"
-          />
-        </div>
-        <div class="flex flex-col">
-          <label for="homePhone" class="mb-1 font-semibold"
-            >Teléfono Fijo</label
-          >
-          <input
-            id="homePhone"
-            type="text"
-            pInputText
-            [(ngModel)]="delegate.homePhone"
-            name="homePhone"
-          />
-        </div>
+       
         <p-button
           [loading]="saveInProgress"
           type="submit"
