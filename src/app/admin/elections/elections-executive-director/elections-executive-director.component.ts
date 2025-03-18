@@ -7,10 +7,18 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ButtonModule } from 'primeng/button';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToastService } from '../../../helpers/services/system/toast.service';
+import { DatePipe } from '@angular/common';
+import { DelegateService } from '../../../helpers/services/delegate/delegate.service';
 
 @Component({
   selector: 'app-elections-executive-director',
-  imports: [CardModule, ChartModule, ButtonModule, ProgressSpinnerModule],
+  imports: [
+    CardModule,
+    ChartModule,
+    ButtonModule,
+    ProgressSpinnerModule,
+    DatePipe,
+  ],
   templateUrl: './elections-executive-director.component.html',
   styleUrl: './elections-executive-director.component.scss',
 })
@@ -19,13 +27,15 @@ export class ElectionsExecutiveDirectorComponent {
   data: any;
   options: any;
   loading: boolean = false;
-  tie:boolean=false
+  tie: boolean = false;
+  reportDate = new Date();
 
   constructor(
     private readonly executiveDirectorVoteService: ExecutiveDirectorVoteService,
     private readonly cd: ChangeDetectorRef,
     private readonly sanitizer: DomSanitizer,
-    private readonly toastService: ToastService
+    private readonly toastService: ToastService,
+    private readonly delegateService:DelegateService
   ) {}
 
   ngOnInit(): void {
@@ -33,11 +43,12 @@ export class ElectionsExecutiveDirectorComponent {
   }
 
   getVotes() {
+    this.reportDate = new Date()
     this.loading = true;
     this.executiveDirectorVoteService
       .countVotesByNominee()
       .subscribe((votes) => {
-        this.votes = votes
+        this.votes = votes;
         this.initChart(votes);
         this.tie = this.checkForTie(votes);
         this.loading = false;
@@ -110,7 +121,7 @@ export class ElectionsExecutiveDirectorComponent {
     );
 
     this.data = {
-      labels: sortedResults.map((voteCount) => voteCount.electionName),
+      labels: sortedResults.map((voteCount) => voteCount.nomineeName),
       datasets: [
         {
           label: 'Votos por Candidato',
@@ -178,5 +189,20 @@ export class ElectionsExecutiveDirectorComponent {
   decodeImage(base64String: string) {
     const imageUrl = `data:image/*;base64,${base64String}`;
     return this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+  }
+
+  changeDelegateVoteStatus(newState: boolean) {
+    let message = newState ? 'habilitó' : 'deshabilitó';
+    this.delegateService.updateEnableToVote(newState).subscribe({
+      next: () => {
+        this.toastService.showSuccess(
+          'Estado actualizado',
+          `Se ${message} el permiso de votación de los participantes`
+        );
+      },
+      error: (err) => {
+        this.toastService.showError('Error', err.error?.message);
+      },
+    });
   }
 }

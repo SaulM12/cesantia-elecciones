@@ -2,7 +2,7 @@ export interface ExecutiveDirectorVoteCountDto {
   id: number;
   nomineeCi: string;
   nomineeName: string;
-  electionName: string;
+  grade:string;
   voteCount: number;
   image?: string;
 }

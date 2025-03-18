@@ -1,4 +1,10 @@
 <div class="custom-p flex flex-col gap-3">
+  <p-button
+  severity="success"
+  label="Habilitar elección"
+  [loading]="loading"
+  (onClick)="changeDelegateVoteStatus(true)"
+/>
   <h1>RESULTADOS ELECCIÓN DIRECTOR EJECUTIVO:</h1>
   <p-button
     severity="secondary"
@@ -20,6 +26,9 @@
     <h3 class="text-xl font-semibold text-gray-800 text-center mb-4">
       Resumen de Votación
     </h3>
+    <p>
+      Hora y fecha de actualización: {{ reportDate | date: 'dd/MM/yyyy HH:mm:ss' }}
+    </p> 
     @if (loading) 
     {
       <p-progress-spinner ariaLabel="loading" />
@@ -45,7 +54,7 @@
               }@else { No registra imagen }
             </td>
             <td class="py-3 px-4 text-left text-gray-800">
-              {{ vote.electionName }}
+              {{ vote.nomineeName }}
             </td>
   
             <td class="py-3 px-4 text-center text-gray-900 font-medium">

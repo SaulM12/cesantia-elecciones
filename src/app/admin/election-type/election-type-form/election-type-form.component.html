@@ -31,6 +31,19 @@
         #descriptionInput="ngModel"
       />
     </div>
+    <div class="flex flex-col gap-1">
+      <label for="articles" class="font-semibold">Artículos</label>
+      <input
+        id="articles"
+        type="text"
+        pInputText
+        [(ngModel)]="electionType.articles"
+        name="articles"
+        required
+        [ngClass]="articlesInput.errors?.['required'] && (articlesInput.dirty || articlesInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #articlesInput="ngModel"
+      />
+    </div>
     <div>
       <p-button
         [loading]="saveInProgress"

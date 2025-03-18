@@ -16,6 +16,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { TableEntity } from '../../../helpers/models/organization/table-entity';
 import { Select } from 'primeng/select';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { InputTextModule } from 'primeng/inputtext';
 @Component({
   selector: 'table-form',
   imports: [
@@ -25,6 +26,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
     NgClass,
     Select,
     InputNumberModule,
+    InputTextModule
   ],
   templateUrl: './table-form.component.html',
   styleUrl: './table-form.component.scss',

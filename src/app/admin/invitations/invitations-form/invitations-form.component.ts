@@ -12,13 +12,12 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { InputText } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { NgClass } from '@angular/common';
-import { Button } from 'primeng/button';
 import { ToastService } from '../../../helpers/services/system/toast.service';
 import { DelegateService } from '../../../helpers/services/delegate/delegate.service';
 import { MessageModule } from 'primeng/message';
 @Component({
   selector: 'invitations-form',
-  imports: [FormsModule, InputText, SelectModule, NgClass, Button,MessageModule],
+  imports: [FormsModule, InputText, SelectModule, NgClass,MessageModule],
   templateUrl: './invitations-form.component.html',
   styleUrl: './invitations-form.component.scss',
 })

@@ -7,10 +7,11 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { switchMap } from 'rxjs';
 import { NgClass } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-elections-menu',
-  imports: [ProgressSpinnerModule, NgClass, RouterModule],
+  imports: [ProgressSpinnerModule, NgClass, RouterModule, ButtonModule],
   templateUrl: './elections-menu.component.html',
   styleUrl: './elections-menu.component.scss',
 })

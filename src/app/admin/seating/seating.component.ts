@@ -11,7 +11,7 @@ import {
   TableDto,
 } from '../../helpers/models/organization/quadrant';
 import { QuadrantService } from '../../helpers/services/organization/quadrant.service';
-import { TableEntityService } from './../../helpers/services/organization/table-entity.service';
+import { ProgressBarModule } from 'primeng/progressbar';
 import { Component } from '@angular/core';
 import { InvitationStatus } from '../../helpers/enums/initation_status';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -28,7 +28,8 @@ import { ButtonModule } from 'primeng/button';
     ProgressSpinnerModule,
     DialogModule,
     InvitationsFormComponent,
-    ButtonModule
+    ButtonModule,
+    ProgressBarModule
   ],
   templateUrl: './seating.component.html',
   styleUrl: './seating.component.scss',
@@ -93,7 +94,7 @@ export class SeatingComponent {
       status: invitation.status,
       tableEntity: {
         id: table.id,
-        tableNumber: table.tableNumber,
+        name: table.name,
         quadrant: quadrant,
       },
       delegate: invitation.delegate ? invitation.delegate : undefined,

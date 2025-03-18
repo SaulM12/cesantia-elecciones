@@ -15,9 +15,24 @@
       />
     </div>
 
+     <!-- Campo Grado -->
+     <div class="flex flex-col gap-1">
+      <label for="grade" class="font-semibold">Grado</label>
+      <input
+        id="grade"
+        type="text"
+        pInputText
+        [(ngModel)]="nominee.grade"
+        name="grade"
+        required
+        [ngClass]="gradeInput.errors?.['required'] && (gradeInput.dirty || gradeInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #gradeInput="ngModel"
+      />
+    </div>
+
     <!-- Campo Nombres -->
     <div class="flex flex-col gap-1">
-      <label for="names" class="font-semibold">Nombres</label>
+      <label for="names" class="font-semibold">Nombre completo</label>
       <input
         id="names"
         type="text"
@@ -27,53 +42,6 @@
         required
         [ngClass]="namesInput.errors?.['required'] && (namesInput.dirty || namesInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
         #namesInput="ngModel"
-      />
-    </div>
-
-    <!-- Campo Apellido Paterno -->
-    <div class="flex flex-col gap-1">
-      <label for="lastName" class="font-semibold">Apellido Paterno</label>
-      <input
-        id="lastName"
-        type="text"
-        pInputText
-        [(ngModel)]="nominee.lastName"
-        name="lastName"
-        required
-        [ngClass]="lastNameInput.errors?.['required'] && (lastNameInput.dirty || lastNameInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
-        #lastNameInput="ngModel"
-      />
-    </div>
-
-    <!-- Campo Apellido Materno -->
-    <div class="flex flex-col gap-1">
-      <label for="secondLastName" class="font-semibold">Apellido Materno</label>
-      <input
-        id="secondLastName"
-        type="text"
-        pInputText
-        [(ngModel)]="nominee.secondLastName"
-        name="secondLastName"
-        required
-        [ngClass]="secondLastNameInput.errors?.['required'] && (secondLastNameInput.dirty || secondLastNameInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
-        #secondLastNameInput="ngModel"
-      />
-    </div>
-
-    <!-- Campo Nombre de la Elección -->
-    <div class="flex flex-col gap-1">
-      <label for="electionName" class="font-semibold"
-        >Nombre de la Elección</label
-      >
-      <input
-        id="electionName"
-        type="text"
-        pInputText
-        [(ngModel)]="nominee.electionName"
-        name="electionName"
-        required
-        [ngClass]="electionNameInput.errors?.['required'] && (electionNameInput.dirty || electionNameInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
-        #electionNameInput="ngModel"
       />
     </div>
 

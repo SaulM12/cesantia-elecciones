@@ -97,8 +97,6 @@ export class ExecutiveDirectorNomineeComponent {
       [headers.id]: nominee.id,
       [headers.ci]: nominee.ci,
       [headers.names]: nominee.names,
-      [headers.lastName]: nominee.lastName,
-      [headers.secondLastName]: nominee.secondLastName,
       [headers.electionName]: nominee.electionName,
       [headers.period]: nominee.period?.description || 'N/A',
     }));

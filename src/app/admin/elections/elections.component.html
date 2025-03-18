@@ -1,8 +1,14 @@
 <div class="custom-p flex flex-col gap-2">
- 
-
   <p-card header="Elecciones activas">
     <h3>Cuadrantes</h3>
+    <p-button
+      label="Generar actas"
+      styleClass="my-3"
+      severity="secondary"
+      icon="pi pi-file-pdf"
+      [loading]="isLoading"
+      (onClick)="generatePDF()"
+    />
     <div class="flex gap-2 flex-wrap">
       @for (quadrant of quadrants; track $index) {
       <a [routerLink]="quadrant.id.toString()" class="p-button" pButton>

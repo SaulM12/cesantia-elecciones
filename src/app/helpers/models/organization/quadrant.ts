@@ -21,6 +21,7 @@ export interface QuadrantDto {
 export interface TableDto {
   id: number;
   tableNumber: number;
+  name:string;
   invitations: InvitationDto[];
 }
 

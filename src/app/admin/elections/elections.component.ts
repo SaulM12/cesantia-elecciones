@@ -7,6 +7,7 @@ import { QuadrantService } from '../../helpers/services/organization/quadrant.se
 import { Quadrant } from '../../helpers/models/organization/quadrant';
 import { CardModule } from 'primeng/card';
 import { RouterModule } from '@angular/router';
+import { CandidateElectionsService } from '../../helpers/services/elections/candidate-elections.service';
 @Component({
   selector: 'app-elections',
   imports: [ToolbarModule, ButtonModule, CardModule, RouterModule],
@@ -15,10 +16,13 @@ import { RouterModule } from '@angular/router';
 })
 export class ElectionsComponent {
   quadrants: Quadrant[] = [];
+  isLoading:boolean = false
+
   constructor(
     private readonly delegateService: DelegateService,
     private readonly toastService: ToastService,
-    private readonly quadrantService: QuadrantService
+    private readonly quadrantService: QuadrantService,
+    private readonly candidateElectionsService:CandidateElectionsService
   ) {}
 
   ngOnInit(): void {
@@ -47,6 +51,25 @@ export class ElectionsComponent {
       },
       error: (err) => {
         this.toastService.showError('Error', err.error?.message);
+      },
+    });
+  }
+
+  generatePDF() {
+    this.isLoading = true
+    this.toastService.showInfo('ACTAS', 'Generando documento en pdf...');
+    this.candidateElectionsService.generatePdf().subscribe({
+      next: (data) => {
+        let newFile = new File([data], 'acta.pdf', {
+          type: 'application/pdf',
+        });
+        this.isLoading = false
+        let fileURL = URL.createObjectURL(newFile);
+        window.open(fileURL, '_blank');
+      },
+      error: (err) => {
+        this.isLoading = false
+        this.toastService.showError('Error', err.error.message);
       },
     });
   }

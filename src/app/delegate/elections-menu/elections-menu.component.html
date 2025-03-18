@@ -6,26 +6,30 @@
     <p-progress-spinner ariaLabel="loading" />
   </div>
   }@else {
-  <p>Bienvenido {{ delegate.names }}</p>
-
+  <p>Bienvenido {{delegate.grade.abbreviation}}. {{ delegate.names }}</p>
+  <p-button
+    severity="secondary"
+    label="Actualizar"
+    icon="pi pi-refresh"
+    [loading]="loadingData"
+    (onClick)="getUserDetails()"
+  />
   <div
     class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
   >
-    @for (election of delegate.grade.quadrant.electionTypes; track $index) { @if
-    (election.name === "Elección Director Ejecutivo") {
     <a
       class="relative p-4 border rounded-lg shadow-md flex flex-col items-center transition-transform transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
       [ngClass]="
-        election.enabled
+        delegate.enableToVote
           ? 'bg-blue-500 text-white'
           : 'bg-gray-300 text-gray-700 disabled'
       "
       [routerLink]="[
-        election.enabled ? '/delegate/votacion-director/': ''
+        delegate.enableToVote ? '/delegate/votacion-director/' : ''
       ]"
     >
-      <h2 class="text-lg font-semibold">{{ election.name }}</h2>
-      @if (!election.enabled) {
+      <h2 class="text-lg font-semibold">Director ejecutivo</h2>
+      @if (! delegate.enableToVote) {
       <span
         class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full"
       >
@@ -33,7 +37,8 @@
       </span>
       }
     </a>
-    }@else {
+    @for (election of delegate.grade.quadrant.electionTypes; track $index) {
+
     <a
       class="relative p-4 border rounded-lg shadow-md flex flex-col items-center transition-transform transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
       [ngClass]="
@@ -54,7 +59,7 @@
       </span>
       }
     </a>
-    } }
+    }
   </div>
   }
 </div>

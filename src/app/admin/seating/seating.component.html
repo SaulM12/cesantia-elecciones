@@ -2,7 +2,7 @@
   <h1 class="text-xl font-semibold">Gestión de asistencia y cuadrantes</h1>
   <p-button
   severity="secondary"
-  label="Actualizar resultados"
+  label="Actualizar asistencia"
   icon="pi pi-refresh"
   [loading]="isLoading"
   (onClick)="initApp()"
@@ -32,9 +32,9 @@
     Asistentes: {{ invitationsScannedCount }}
   </p>
   <p>
-    Porcentaje de asistentes 
-  {{ (invitationsScannedCount / invitationsCount) * 100 }}%
+    Porcentaje de asistencia general 
   </p>
+  <p-progressbar [value]="(invitationsScannedCount / invitationsCount) * 100" />
   <div
     class="min-h-screen grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 xl:grid-cols-5 gap-6"
   >

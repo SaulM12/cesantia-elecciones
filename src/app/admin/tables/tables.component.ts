@@ -85,12 +85,12 @@ export class TablesComponent {
     const headers = {
       id: 'ID',
       quadrant: 'Cuadrante',
-      tableNumber: 'Número de mesa',
+      name: 'Mesa',
     };
 
     const formattedQuadrants = tables.map((table) => ({
       [headers.id]: table.id,
-      [headers.tableNumber]: table.tableNumber,
+      [headers.name]: table.name,
       [headers.quadrant]: table.quadrant.description,
     }));
 

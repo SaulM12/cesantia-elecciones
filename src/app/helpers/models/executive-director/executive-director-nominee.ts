@@ -4,9 +4,8 @@ export interface ExecutiveDirectorNominee {
   id: number;
   ci: string;
   names: string;
-  lastName: string;
-  secondLastName: string;
   electionName: string;
+  grade:string;
   image:any;
   period: Period;
 }

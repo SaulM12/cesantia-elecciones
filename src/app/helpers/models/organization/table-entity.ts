@@ -2,6 +2,6 @@ import { Quadrant } from "./quadrant";
 
 export interface TableEntity {
     id: number;
-    tableNumber: number;
+    name:string;
     quadrant: Quadrant;
   }

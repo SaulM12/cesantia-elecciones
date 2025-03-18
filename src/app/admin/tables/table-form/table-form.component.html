@@ -1,20 +1,22 @@
 <form (ngSubmit)="save()" #form="ngForm">
   <div class="flex flex-col gap-4">
     <div class="flex flex-col gap-1">
-      <label for="tableNumberInput" class="font-semibold">Número mesa</label>
+      <label for="tableNumberInput" class="font-semibold">Nombre</label>
 
-      <p-inputnumber
-        inputId="integeronly"
-        [(ngModel)]="table.tableNumber"
-        name="tableNumber"
+      <input
+        [(ngModel)]="table.name"
+        name="name"
+        pInputText
         required
-        [ngClass]="tableNumberInput.errors?.['required'] && (tableNumberInput.dirty || tableNumberInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
-        #tableNumberInput="ngModel"
+        [ngClass]="nameInput.errors?.['required'] && (nameInput.dirty || nameInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #nameInput="ngModel"
       />
     </div>
 
     <div class="flex flex-col gap-1">
-      <label for="quadrantInput" class="font-semibold">Cuadrante designado</label>
+      <label for="quadrantInput" class="font-semibold"
+        >Cuadrante designado</label
+      >
       <p-select
         [options]="quadrants"
         [(ngModel)]="table.quadrant"

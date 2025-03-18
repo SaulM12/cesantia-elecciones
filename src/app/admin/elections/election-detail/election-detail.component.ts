@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ElectionAuthorityService } from './../../../helpers/services/elections/election-authority.service';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DelegateVoteService } from '../../../helpers/services/delegate/delegate-vote.service';
 import DelegateVoteCountDto from '../../../helpers/models/elections/delegate-vote-count-dto';
@@ -9,10 +10,14 @@ import { ChartModule } from 'primeng/chart';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ButtonModule } from 'primeng/button';
 import { Select } from 'primeng/select';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { ElectionType } from '../../../helpers/models/elections/election-type';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToastService } from '../../../helpers/services/system/toast.service';
+import { DatePipe, NgClass } from '@angular/common';
+import { DialogModule } from 'primeng/dialog';
+import ElectionAuthority from '../../../helpers/models/elections/election-authority';
+import { InputText } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-election-detail',
@@ -23,6 +28,10 @@ import { ToastService } from '../../../helpers/services/system/toast.service';
     Select,
     FormsModule,
     ProgressSpinnerModule,
+    DatePipe,
+    DialogModule,
+    InputText,
+    NgClass,
   ],
   templateUrl: './election-detail.component.html',
   styleUrl: './election-detail.component.scss',
@@ -35,6 +44,15 @@ export class ElectionDetailComponent {
   loading: boolean = false;
   selectedElection: ElectionType | undefined;
   tie: boolean = false;
+  reportDate = new Date();
+  visibleAuthoritiesModal: boolean = false;
+  authorities: ElectionAuthority[] = [];
+  secretary: ElectionAuthority | undefined;
+  president: ElectionAuthority | undefined;
+  electionAuthority = {} as ElectionAuthority;
+  submitted: boolean = false;
+  saveInProgress: boolean = false;
+  @ViewChild('form') form!: NgForm;
 
   constructor(
     private readonly delegateVoteService: DelegateVoteService,
@@ -42,7 +60,8 @@ export class ElectionDetailComponent {
     private readonly quadrantService: QuadrantService,
     private readonly cd: ChangeDetectorRef,
     private readonly sanitizer: DomSanitizer,
-    private readonly toastService: ToastService
+    private readonly toastService: ToastService,
+    private readonly electionAuthorityService: ElectionAuthorityService
   ) {}
 
   ngOnInit(): void {
@@ -60,9 +79,12 @@ export class ElectionDetailComponent {
       },
     });
   }
+
   getDelegateVoteCounts() {
     this.loading = true;
+    this.reportDate = new Date();
     let id = this.activatedRoute.snapshot.paramMap.get('id');
+    this.getElectionAuthorities(this.selectedElection?.id!, +id!);
     this.delegateVoteService
       .getCandidatesWithVoteCountByQuadrantAndElectionType(
         +id!,
@@ -77,6 +99,62 @@ export class ElectionDetailComponent {
         },
         error: (err) => {
           this.loading = false;
+        },
+      });
+  }
+
+  getElectionAuthorities(electionId: number, quadrantId: number) {
+    this.electionAuthorityService
+      .getByElectionAndQuadrant(electionId, quadrantId)
+      .subscribe((data) => {
+        this.president = undefined;
+        this.secretary = undefined;
+        this.visibleAuthoritiesModal = false;
+        data.forEach((element) => {
+          if (element.role === 'PRESIDENTE') {
+            this.president = element;
+          } else {
+            this.secretary = element;
+          }
+        });
+      });
+  }
+
+  openAuthorityModal(
+    role: string,
+    quadrant: Quadrant,
+    electionType: ElectionType
+  ) {
+    this.electionAuthority = {} as ElectionAuthority;
+    this.electionAuthority.quadrant = quadrant;
+    this.electionAuthority.electionType = electionType;
+    this.electionAuthority.role = role;
+    this.visibleAuthoritiesModal = true;
+  }
+
+  saveAuthority() {
+    if (this.form.invalid) {
+      this.toastService.showError('Error', 'Complete los campos requeridos');
+      this.submitted = true;
+      return;
+    }
+    this.saveInProgress = true;
+    this.electionAuthorityService
+      .createAuthority(this.electionAuthority)
+      .subscribe({
+        next: () => {
+          this.toastService.showInfo(
+            'Registrado',
+            'Autoridad registrada correctamente'
+          );
+          this.saveInProgress = false;
+
+          let id = this.activatedRoute.snapshot.paramMap.get('id');
+          this.getElectionAuthorities(this.selectedElection?.id!, +id!);
+        },
+        error: () => {
+          this.saveInProgress = false;
+          this.toastService.showError('Error', '');
         },
       });
   }

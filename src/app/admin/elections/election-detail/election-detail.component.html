@@ -1,6 +1,6 @@
 <div class="custom-p flex flex-col gap-3">
   @if (selectedQuadrant) {
-  <h1>RESULTADOS DEL CUADRANTE: {{ selectedQuadrant.description }}</h1>
+  <h1>ELECCIONES DEL CUADRANTE: {{ selectedQuadrant.description }}</h1>
   <p-select
     [options]="selectedQuadrant.electionTypes"
     [(ngModel)]="selectedElection"
@@ -18,7 +18,31 @@
     [loading]="loading"
     (onClick)="getDelegateVoteCounts()"
   />
-  @if (tie) {
+  @if (selectedElection) {
+    <h2>AUTORIDADES</h2>
+    <div class="flex gap-2">
+     
+      @if (president) {
+      <p>Presidente: {{ president.fullName }}</p>
+      }@else{
+      <p-button
+        severity="secondary"
+        label="Registrar presidente"
+        [loading]="loading"
+        (onClick)="openAuthorityModal('PRESIDENTE', selectedQuadrant, selectedElection)"
+      />
+      } @if (secretary) {
+      <p>Secretario/a: {{ secretary.fullName }}</p>
+      }@else{
+      <p-button
+        severity="secondary"
+        label="Registrar secretario/a"
+        [loading]="loading"
+        (onClick)="openAuthorityModal('SECRETARIO', selectedQuadrant, selectedElection)"
+      />
+      }
+    </div>
+  } @if (tie) {
   <p-button
     severity="secondary"
     label="Reiniciar elección"
@@ -33,6 +57,10 @@
     <h3 class="text-xl font-semibold text-gray-800 text-center mb-4">
       Resumen de Votación
     </h3>
+    <p>
+      Hora y fecha de actualización:
+      {{ reportDate | date : "dd/MM/yyyy HH:mm:ss" }}
+    </p>
     @if (loading) {
     <p-progress-spinner ariaLabel="loading" />
     }@else {
@@ -72,3 +100,104 @@
   </div>
   }
 </div>
+<p-dialog
+  header="Registrar autoridad"
+  [(visible)]="visibleAuthoritiesModal"
+  [modal]="true"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+<form (ngSubmit)="saveAuthority()" #form="ngForm">
+  <div class="flex flex-col gap-4">
+    <!-- Campo Activo -->
+ 
+    <!-- Campo CI -->
+    <div class="flex flex-col gap-1">
+      <label for="ci" class="font-semibold">CI</label>
+      <input
+        id="ci"
+        type="text"
+        pInputText
+        [(ngModel)]="electionAuthority.ci"
+        name="ci"
+        required
+        [ngClass]="ciInput.errors?.['required'] && (ciInput.dirty || ciInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #ciInput="ngModel"
+      />
+    </div>
+
+    <!-- Campo Nombres -->
+    <div class="flex flex-col gap-1">
+      <label for="names" class="font-semibold">Apellidos y nombres</label>
+      <input
+        id="names"
+        type="text"
+        pInputText
+        [(ngModel)]="electionAuthority.fullName"
+        name="names"
+        required
+        [ngClass]="namesInput.errors?.['required'] && (namesInput.dirty || namesInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #namesInput="ngModel"
+      />
+    </div>
+
+     <!-- Campo Grado -->
+     <div class="flex flex-col gap-1">
+      <label for="grade" class="font-semibold">Grado</label>
+      <input
+        id="grade"
+        type="text"
+        pInputText
+        [(ngModel)]="electionAuthority.grade"
+        name="grade"
+        required
+        [ngClass]="gradeInput.errors?.['required'] && (gradeInput.dirty || gradeInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #gradeInput="ngModel"
+      />
+    </div>
+
+     <!-- Campo Grado -->
+     <div class="flex flex-col gap-1">
+      <label for="role" class="font-semibold">Autoridad</label>
+      <input
+        id="role"
+        type="text"
+        pInputText
+        [(ngModel)]="electionAuthority.role"
+        name="role"
+        [disabled]="true"
+        required
+        [ngClass]="roleInput.errors?.['required'] && (roleInput.dirty || roleInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #roleInput="ngModel"
+      />
+    </div>
+
+
+    <!-- Campo Teléfono -->
+    <div class="flex flex-col gap-1">
+      <label for="phone" class="font-semibold">Teléfono</label>
+      <input
+        id="phone"
+        type="text"
+        pInputText
+        [(ngModel)]="electionAuthority.phone"
+        name="phone"
+        required
+        [ngClass]="phoneInput.errors?.['required'] && (phoneInput.dirty || phoneInput.touched || submitted) ? 'ng-invalid ng-dirty' : ''"
+        #phoneInput="ngModel"
+      />
+    </div>
+
+    <!-- Botón Guardar -->
+    <div>
+      <p-button
+        [loading]="saveInProgress"
+        type="submit"
+        label="Guardar"
+      ></p-button>
+    </div>
+  </div>
+</form>
+</p-dialog>

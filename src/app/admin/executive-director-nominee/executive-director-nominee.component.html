@@ -33,18 +33,16 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th>ID</th>
         <th>CI</th>
         <th>Imagen</th>
+        <th>Grado</th>
         <th>Nombre Completo</th>
-        <th>Nombre de Elección</th>
         <th>Periodo</th>
         <th>Acciones</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-delegate>
       <tr>
-        <td>{{ delegate.id }}</td>
         <td>{{ delegate.ci }}</td>
         <td>
           @if (delegate.image) {
@@ -52,10 +50,11 @@
           }@else { No registra imagen }
         </td>
         <td>
-          {{ delegate.names }} {{ delegate.lastName }}
-          {{ delegate.secondLastName }}
+          {{ delegate.grade }}
         </td>
-        <td>{{ delegate.electionName }}</td>
+        <td>
+          {{ delegate.names }}
+        </td>
         <td>{{ delegate.period.description }}</td>
         <td>
           <div class="flex flex-wrap gap-2">

@@ -41,4 +41,10 @@ export class CandidateElectionsService {
       { params, withCredentials: true }
     );
   }
+  generatePdf() {
+    return this.http.get(`${environment.apiUrl}reportes/acta-eleccion/pdf`, {
+      withCredentials: true,
+      responseType: 'blob',
+    });
+  }
 }
